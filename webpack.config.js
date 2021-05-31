@@ -8,7 +8,7 @@ module.exports = {
     entry: {
         content: './src/app/content.ts',
         background: './src/app/background.ts', // Runs persistently in the background
-        popup: './src/ui/popup.tsx', // The browser_action popup
+        popup: './src/ui/popup.tsx',           // The browser_action popup
     },
 
     output: {
@@ -37,5 +37,4 @@ module.exports = {
           ],
         }),
     ] 
-
 };

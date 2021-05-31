@@ -1,16 +1,18 @@
 {
   "name": "yt-man",
   "version": "1.0.0",
-  "description": "Extension enabling X second skips in videos using media keys and other QoL features for YouTube",
+  "description": "Extension for time based skips with media keys on YouTube",
   "main": "index.js",
   "scripts": {
-    "build": "webpack"
+    "bundle": "webpack --mode production --config webpack.config.js",
+    "watch": "webpack --mode development -w --config webpack.config.dev.js",
+    "debug": "web-ext run -t chromium --chromium-binary /Applications/Chromium.app/Contents/MacOS/Chromium -s dist/ --reload --start-url 'https://www.youtube.com/watch?v=m5RET4g2qII' --chromium-profile ~/Library/Application\\ Support/Chromium/Default"
   },
   "keywords": [],
   "author": "",
-  "license": "BSD-3-Clause",
+  "license": "MIT",
   "devDependencies": {
-    "webpack-extension-reloader": "^1.1.4"
+    "web-ext": "^6.1.0"
   },
   "dependencies": {
     "@types/chrome": "^0.0.142",
