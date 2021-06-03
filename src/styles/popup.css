@@ -9,3 +9,13 @@ body {
     padding-left: 10px;
     padding-right: 10px;
 }
+
+.square {
+    border: 1px;
+    color: black;
+}
+
+.square-blue {
+    border: 1px;
+    color: blue;
+}
