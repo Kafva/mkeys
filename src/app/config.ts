@@ -2,6 +2,8 @@ import { ShortcutKey } from "../models/ShortcutKey";
 
 export const DEBUG = true;
 export const DEFAULT_SKIP_SECONDS = 60;
+export const MAX_SKIP_MINUTES = 30;
+export const MIN_SKIP_MINUTES = 1;
 
 // Utilises the default shortcuts on YT to skip/rewind 5s
 export const REWIND_KEY: ShortcutKey =  {

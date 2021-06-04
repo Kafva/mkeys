@@ -15,9 +15,10 @@ import TimerIcon from '@material-ui/icons/Timer';
 
 /****** Components *********/
 import FeatureSwitch from './components/FeatureSwitch';
+import FeatureSlider from './components/FeatureSlider';
 import List from '@material-ui/core/List';
 
-function App(){
+function App() {
     // Determine if the users has dark or light mode specified in their browser/OS
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
 
@@ -37,13 +38,14 @@ function App(){
           }),
         [prefersDarkMode]
     );
-
+    
     return <ThemeProvider theme={theme}>
     <CssBaseline>
         <List>
-            <FeatureSwitch text="feature 1" icon={TimerIcon} />
-            <FeatureSwitch text="feature 2"/>
-            <FeatureSwitch text="feature 3"/>
+            <FeatureSlider text="Minutes to skip" icon={TimerIcon} />
+            <FeatureSwitch text="Switch 1" icon={TimerIcon} />
+            <FeatureSwitch text="Switch 2"/>
+            <FeatureSwitch text="Switch 3"/>
         </List>
     </CssBaseline>
     </ThemeProvider>
@@ -51,5 +53,5 @@ function App(){
 
 ReactDOM.render(
     <App/>,
-    document.getElementById('root')
+    document.querySelector('#app')
 )
