@@ -1,6 +1,7 @@
 {
     "compilerOptions": {
         "sourceMap": true,
+        "esModuleInterop": true, // https://stackoverflow.com/questions/56238356/understanding-esmoduleinterop-in-tsconfig-file
         "target": "es6",
         "module": "commonjs",
         "jsx": "react"

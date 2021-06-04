@@ -8,7 +8,7 @@ module.exports = {
     entry: {
         content: './src/app/content.ts',       // Script that can interact with the page
         background: './src/app/background.ts', // Runs persistently in the background
-        popup: './src/ui/popup.tsx',           // The browser_action popup
+        popup: './src/popup.tsx',              // The browser_action popup
     },
 
     output: {
