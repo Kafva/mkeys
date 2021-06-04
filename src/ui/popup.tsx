@@ -1,6 +1,6 @@
 import * as React from "react"        // The core features of React
 import * as ReactDOM from "react-dom" // Mainly used to mount the root components
-import "../styles/popup.css"
+import "../scss/main.scss"
 
 // Localisation: https://developer.chrome.com/docs/extensions/reference/in/
 
@@ -13,13 +13,15 @@ import "../styles/popup.css"
 // In TypeScript we need to define the props 
 // and state attributes for each component
 type SquareProps = {
-    color: string,
+    // Props => Immutable
     text: string,
     length?: number, // Optional attributes
     height?: number
 }
 
 type SquareState = {
+    // State => Mutable
+    color: string,
     x: number,
     y: number
 }
@@ -29,26 +31,53 @@ class Square extends React.Component<SquareProps, SquareState> {
     // hierarchical JSX.Element through render() 
 
     // React components have an internal state variable
-    state: SquareState = {
-        x: 0,
-        y: 0,
-    };
+    state: SquareState;
+    //state: SquareState = {
+    //    color: "square-black",
+    //    x: 0,
+    //    y: 0,
+    //};
     
     constructor(props: SquareProps) {
         super(props);
+        this.state = {
+            color: "square-black",
+            x: 0,
+            y: 0
+        }
+    }
+    
+    componentDidMount() {
+    }
+
+    componentWillUnmount() {
     }
 
     render() {
         // JSX syntax gives a shorthand way to invoke .createElement()
         
-        let className = "square";
-        if (this.props.color != 'black'){
-            className+= "-" + this.props.color;
-        }
+        //let className = "square";
+        //if (this.state.color != 'black'){
+        //    className+= "-" + this.state.color;
+        //}
 
         return (
-            <div className={className}>
-                <h1> { this.props.text } </h1>
+            <div className={this.state.color} >
+                <h1 onClick={ () => {
+                    // Note that '()' are needed around the block after the '=>'
+                    // to make it into a return value
+                    this.setState( (state) => ({color: 'square-blue'}) ); 
+                } }> 
+                    Make things blue
+                </h1>
+                <h1 onClick={ () => {
+                    // Note that '()' are needed around the block after the '=>'
+                    // to make it into a return value
+                    this.setState( (state) => ({color: 'square-red'}) ); 
+                } }> 
+                    Make things red
+                </h1>
+                <h1>{this.props.text}</h1>
             </div>
             
             //<div className="popup-padded">
@@ -64,6 +93,6 @@ class Square extends React.Component<SquareProps, SquareState> {
 ReactDOM.render(
     // When React sees a user defined component it passes all params and
     // sub-elements as a single object: 'props'
-    <Square color="blue"  text="react harder XDDD" />,
+    <Square text="react harder XDDD" />,
     document.getElementById('root')
 )
