@@ -19,6 +19,16 @@ type SliderProps = {
 }
 
 // -------------
+const marks = [
+  {
+    value: 1,
+    label: '1 min',
+  },
+  {
+    value: 30,
+    label: '30 min',
+  }
+];
 
 export default class FeatureSlider extends React.Component<SliderProps> {
 
@@ -39,6 +49,7 @@ export default class FeatureSlider extends React.Component<SliderProps> {
                 <TextField
                     label={this.props.text}
                     aria-label={this.props.text}
+                    disabled={this.props.disabled}
                     type="number"
                     value={this.props.minutes}
                     onChange={ (event:any) => {
@@ -46,7 +57,7 @@ export default class FeatureSlider extends React.Component<SliderProps> {
                         this.props.handleChange(event.target.value)
                     }}
                     error={ !validateMinutes(this.props.minutes) }
-                    helperText={ validateMinutes(this.props.minutes) ||
+                    helperText={ validateMinutes(this.props.minutes) ? "" :
                         "Valid range: "+MIN_SKIP_MINUTES+"-"+MAX_SKIP_MINUTES+" min"
                     }
                 />
@@ -56,6 +67,7 @@ export default class FeatureSlider extends React.Component<SliderProps> {
                 max={MAX_SKIP_MINUTES}
                 value={this.props.minutes}
                 disabled={this.props.disabled}
+                marks={marks}
 
                 onChange={ (event: any, newMinutes: number) => {
                     /**** Callback to root component to update state ****/

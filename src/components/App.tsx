@@ -14,7 +14,7 @@ import AvTimerIcon from '@material-ui/icons/AvTimer';
 import FeatureSwitch from './FeatureSwitch';
 import FeatureSlider from './FeatureSlider';
 import List from '@material-ui/core/List';
-import { DEFAULT_SKIP_MINUTES, MESSAGE, STORAGE_KEYS } from "../extension/config";
+import { DEBUG, DEFAULT_SKIP_MINUTES, MESSAGE, STORAGE_KEYS } from "../extension/config";
 import { Settings } from "../models/Settings";
 import { setSkipMinutes, setupTimeSkip } from "../util/timeskip";
 import { validateMinutes } from "../util/validation";
@@ -23,7 +23,7 @@ interface AppProps extends Settings {
     // The application will take all attributes from
     // Settings along with the theme as props 
     // The 'state' will only reflect the Settings though
-    theme: Theme,
+    theme: Theme
 }
 
 
@@ -52,19 +52,22 @@ export default class App extends React.Component<AppProps,Settings> {
     }
 
     handleFeatureToggle(key: string, value:any) {
+                    // ************* TODO we need to send a message to the
+                    // content script to run any function that interacts wiith tthe page!!!!!!
+                    // *******
+
         // Update the back-end settings in the extension
-        console.log(key,value);
         chrome.runtime.sendMessage({
             action: MESSAGE.setSettings, 
             key: key, 
             value: value 
         }, (response) => {
-            console.log("res", response);
+            DEBUG && console.log(`(${MESSAGE.setSettings}) Feature toggle response:`, response);
             
             switch (key){
                 case STORAGE_KEYS.timeSkipEnabled:
                     // Setup the timeskip feature if the
-                    // newState was the 'active' state
+                    // newoState was the 'active' state
                     value && setupTimeSkip();
                     break;
             }
@@ -90,14 +93,13 @@ export default class App extends React.Component<AppProps,Settings> {
                 <FeatureSwitch 
                     storageKey={STORAGE_KEYS.timeSkipEnabled}
                     text={ chrome.i18n.getMessage("toggleTimeSkip") } 
-                    icon={TimerIcon} 
+                    icon={AvTimerIcon}
                     on={this.state.timeSkipEnabled}
                     handleChange={this.handleFeatureToggle}
                 />
                 <FeatureSlider 
                     text={ chrome.i18n.getMessage("minutesToSkip") }  
                     disabled={!this.state.timeSkipEnabled}
-                    icon={AvTimerIcon}
                     minutes={this.state.minutesToSkip}
                     handleChange={this.handleSliderUpdate}
                 />
