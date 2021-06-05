@@ -2,11 +2,11 @@ import React from "react"
 import ReactDOM from "react-dom"
 
 /*** Styling ****/
-import "./scss/main.scss"
+import "./popup.scss"
 import {createMuiTheme} from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
-import { MESSAGE } from "./app/config";
+import { MESSAGE } from "./extension/config";
 import { Settings } from "./models/Settings";
 import App from './components/App';
 

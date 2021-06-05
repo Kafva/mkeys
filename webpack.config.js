@@ -6,8 +6,8 @@ module.exports = {
     devtool: "inline-source-map",
 
     entry: {
-        content: './src/app/content.ts',       // Script that can interact with the page
-        background: './src/app/background.ts', // Runs persistently in the background
+        content: './src/extension/content.ts',       // Script that can interact with the page
+        background: './src/extension/background.ts', // Runs persistently in the background
         popup: './src/popup.tsx',              // The browser_action popup
     },
 

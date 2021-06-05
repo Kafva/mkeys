@@ -1,4 +1,4 @@
-import { MESSAGE, STORAGE_KEYS } from '../app/config';
+import { MESSAGE, STORAGE_KEYS } from './config';
 import { Settings } from '../models/Settings';
 
 // Service workers can NOT access the DOM directly

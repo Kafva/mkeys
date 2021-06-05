@@ -1,4 +1,4 @@
-import { setupTimeSkip } from '../features/timeskip';
+import { setupTimeSkip } from '../util/timeskip';
 import { MESSAGE, STORAGE_KEYS  } from './config';
 
 // The script execution starts from here, the content script is able to

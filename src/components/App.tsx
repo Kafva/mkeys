@@ -14,9 +14,10 @@ import AvTimerIcon from '@material-ui/icons/AvTimer';
 import FeatureSwitch from './FeatureSwitch';
 import FeatureSlider from './FeatureSlider';
 import List from '@material-ui/core/List';
-import { DEFAULT_SKIP_MINUTES, MESSAGE, STORAGE_KEYS, validateMinutes } from "../app/config";
+import { DEFAULT_SKIP_MINUTES, MESSAGE, STORAGE_KEYS } from "../extension/config";
 import { Settings } from "../models/Settings";
-import { setSkipMinutes, setupTimeSkip } from "../features/timeskip";
+import { setSkipMinutes, setupTimeSkip } from "../util/timeskip";
+import { validateMinutes } from "../util/validation";
 
 interface AppProps extends Settings {
     // The application will take all attributes from

@@ -6,7 +6,8 @@ import Slider from '@material-ui/core/Slider';
 import TextField from '@material-ui/core/TextField';
 import { SvgIconComponent } from "@material-ui/icons";
 
-import { DEFAULT_SKIP_MINUTES, MIN_SKIP_MINUTES, MAX_SKIP_MINUTES, MESSAGE, STORAGE_KEYS, validateMinutes } from '../app/config';
+import { MIN_SKIP_MINUTES, MAX_SKIP_MINUTES } from '../extension/config';
+import { validateMinutes } from "../util/validation";
 
 type SliderProps = {
     text: string

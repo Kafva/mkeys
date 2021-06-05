@@ -28,9 +28,3 @@ export const STORAGE_KEYS = {
     timeSkipEnabled: "timeSkipEnabled",
     minutesToSkip: "minutesToSkip"
 };
-
-//---------
-
-export const validateMinutes = (minutes: number) => {
-    return MIN_SKIP_MINUTES <= minutes && minutes <= MAX_SKIP_MINUTES; 
-}

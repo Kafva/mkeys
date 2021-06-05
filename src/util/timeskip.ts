@@ -1,4 +1,4 @@
-import { DEBUG, DEFAULT_SKIP_MINUTES, MESSAGE, REWIND_KEY, SKIP_KEY, STORAGE_KEYS } from "../app/config";
+import { DEBUG, DEFAULT_SKIP_MINUTES, MESSAGE, REWIND_KEY, SKIP_KEY, STORAGE_KEYS } from "../extension/config";
 import { Settings } from "../models/Settings";
 import { ShortcutKey } from "../models/ShortcutKey";
 
@@ -65,10 +65,10 @@ const timeSkip = (key: ShortcutKey, minutesToSkip: number) => {
         ...key 
     } as KeyboardEventInit);
     
+    DEBUG && console.log(`Skipping -- ${minutesToSkip} minutes ${key.keyCode == 39 ? "forward" : "backwards"}`);
     for (let i = 0; i <  minutesToSkip * 12; i++){
         // One skip is 5 seconds:
         //  60 sec => 12 skips
-        DEBUG && console.log(`Skipping -- ${i} seconds ${key.keyCode == 39 ? "forward" : "backwards"}`);
         document.documentElement.dispatchEvent(keyboardEvent)
     }
 }
