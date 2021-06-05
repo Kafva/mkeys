@@ -48,11 +48,25 @@ chrome.runtime.onMessage.addListener( (message, sender, sendResponse) => {
     // We use regular Promise syntax since an async function for `addListener`
     // does not work: https://stackoverflow.com/questions/44056271/chrome-runtime-onmessage-response-with-async-await
     const { tab, frameId } = sender 
+    console.log("In listener:", message);
     
     switch (message?.action) {
         case MESSAGE.getSettings:
             getSettings(message?.key)
-                .then( (extSettings) => sendResponse( extSettings ) );
+                .then( (extSettings) => {
+                    console.log("Fetched settings:", extSettings);
+                    sendResponse( extSettings ) 
+                });
+            break;
+        case MESSAGE.setSettings:
+            if ( message?.key != null && message?.value != null ){
+                console.log(`Trying to set ext[${message.key}] := ${message.value}`);
+                chrome.storage.local.set( { [message.key]: message.value}, () => {
+                    console.log(`Set ext[${message.key}] := ${message.value}`);
+                    sendResponse({success: true});
+                });
+            } 
+            else { sendResponse({success: false}); }
             break;
         default:
             sendResponse( {message: `Unknown message: '${message}'`});

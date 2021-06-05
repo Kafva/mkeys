@@ -1,4 +1,4 @@
 export interface Settings {
-    timeSkipEnabled: string,
+    timeSkipEnabled: boolean,
     secondsToSkip: number,
 }

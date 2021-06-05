@@ -12,13 +12,11 @@ chrome.runtime.sendMessage({ action: MESSAGE.pageLoaded }, () => {
         if (document.readyState === "complete") {
             
             clearInterval(readyCheckId);
+            console.log("Content script running...");
+            //chrome.storage.local.set( { [STORAGE_KEYS.timeSkipEnabled]: true}, () => {
+            //    console.log("Set!");
+            //});
             
-            chrome.storage.local.set( { [STORAGE_KEYS.timeSkipEnabled]: true}, () => {
-                console.log("Set!");
-            });
-            
-            
-
             await new Promise(r => setTimeout(r, 2000));
             
             setupTimeSkip(); 

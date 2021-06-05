@@ -41,6 +41,9 @@ export const setupTimeSkip = () => {
 }
 
 const timeSkip = (key: ShortcutKey, secondsToSkip: number) => {
+    // We do not want to fetch the current secondsToSkip value for every
+    // call to this function, to update how many seconds are skipped we instead
+    // re-run thhe setup function when the config changes
     const keyboardEvent = new KeyboardEvent('keydown', {
         bubbles: true,
         ...key 
@@ -48,7 +51,7 @@ const timeSkip = (key: ShortcutKey, secondsToSkip: number) => {
     
     for (let i = 0; i <  secondsToSkip / 5; i++){
         // 60 sec skip => 12 skips
-        console.log(`skipping -- ${i}`, key);
+        DEBUG && console.log(`Skipping -- ${i} seconds ${key.keyCode == 39 ? "forward" : "backwards"}`);
         document.documentElement.dispatchEvent(keyboardEvent)
     }
 }

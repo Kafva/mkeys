@@ -19,7 +19,8 @@ export const SKIP_KEY: ShortcutKey = {
 
 export const MESSAGE = {
     pageLoaded: "loaded",
-    getSettings: "getSettings"
+    getSettings: "getSettings",
+    setSettings: "setSettings"
 };
 
 export const STORAGE_KEYS = {

@@ -6,7 +6,7 @@
   "scripts": {
     "bundle": "webpack --mode production --config webpack.config.js",
     "watch": "webpack --mode development -w --config webpack.config.dev.js",
-    "debug": "web-ext run -t chromium --chromium-binary /Applications/Chromium.app/Contents/MacOS/Chromium -s dist/ --reload --start-url 'https://www.youtube.com/watch?v=m5RET4g2qII' --chromium-profile ~/Library/Application\\ Support/Chromium/Default"
+    "debug": "web-ext run --args=' --auto-open-devtools-for-tabs' -t chromium --chromium-binary /Applications/Chromium.app/Contents/MacOS/Chromium -s dist/ --reload --start-url 'https://www.youtube.com/watch?v=m5RET4g2qII' --chromium-profile ~/Library/Application\\ Support/Chromium/Default"
   },
   "keywords": [],
   "author": "",

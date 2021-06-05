@@ -1,3 +1,5 @@
+// Mutli-tab support?
+
 // Localisation: https://developer.chrome.com/docs/extensions/reference/in/
 
 import React from "react"        // The core features of React
@@ -11,14 +13,19 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import {ThemeProvider, createMuiTheme} from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import "./scss/main.scss"
+
+/***** Icons *******/
 import TimerIcon from '@material-ui/icons/Timer';
+import AvTimerIcon from '@material-ui/icons/AvTimer';
 
 /****** Components *********/
 import FeatureSwitch from './components/FeatureSwitch';
 import FeatureSlider from './components/FeatureSlider';
 import List from '@material-ui/core/List';
+import { MESSAGE } from "./app/config";
+import { Settings } from "./models/Settings";
 
-function App() {
+function App (extSettings: Settings) {
     // Determine if the users has dark or light mode specified in their browser/OS
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
 
@@ -39,19 +46,30 @@ function App() {
         [prefersDarkMode]
     );
     
+
     return <ThemeProvider theme={theme}>
     <CssBaseline>
         <List>
-            <FeatureSlider text="Minutes to skip" icon={TimerIcon} />
-            <FeatureSwitch text="Switch 1" icon={TimerIcon} />
-            <FeatureSwitch text="Switch 2"/>
-            <FeatureSwitch text="Switch 3"/>
+            <FeatureSwitch 
+                text="Toggle time skip" 
+                icon={TimerIcon} 
+                initialOnValue={extSettings.timeSkipEnabled} 
+            />
+            <FeatureSlider 
+                text="Minutes to skip"  
+                icon={AvTimerIcon}
+                initialSkipMinutes={extSettings.secondsToSkip/60}
+            />
         </List>
     </CssBaseline>
     </ThemeProvider>
 }
 
-ReactDOM.render(
-    <App/>,
-    document.querySelector('#app')
-)
+chrome.runtime.sendMessage( {action: MESSAGE.getSettings}, (extSettings: Settings) => {
+    
+    // Pass the attributes of the extension settings to the application component
+    ReactDOM.render(
+        <App {...extSettings}/>,
+        document.querySelector('#app')
+    )
+});
