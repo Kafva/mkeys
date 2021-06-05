@@ -1,6 +1,10 @@
 {
-  "l10nHello": {
-    "message": "Hej, React!",
-    "description": "..."
+  "toggleTimeSkip": {
+    "message": "Toggle time skip",
+    "description": "Label for time skip feature switch"
+  },
+  "minutesToSkip": {
+    "message": "Minutes to skip",
+    "description": "Label for time skip slider"
   }
 }

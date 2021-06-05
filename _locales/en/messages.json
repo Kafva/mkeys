@@ -1,6 +1,11 @@
 {
-  "l10nHello": {
-    "message": "Hello, React!",
-    "description": "Hello text for the popup."
+  "toggleTimeSkip": {
+    "message": "Toggle time skip",
+    "description": "Label for time skip feature switch"
+  },
+  "minutesToSkip": {
+    "message": "Minutes to skip",
+    "description": "Label for time skip slider"
   }
+
 }
