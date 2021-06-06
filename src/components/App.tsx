@@ -119,7 +119,7 @@ export default class App extends React.Component<AppProps,AppState> {
             <List>
             <AppItem icon={AvTimerIcon}>
                 <NumericField 
-                    text={ chrome.i18n.getMessage("minutesToSkip") }  
+                    text={chrome.i18n.getMessage("minutesToSkip")}  
                     disabled={!this.state.timeSkipEnabled}
                     minutes={this.state.minutesToSkip}
                     handleChange={this.handleNumericUpdate}
@@ -133,7 +133,7 @@ export default class App extends React.Component<AppProps,AppState> {
             </AppItem>
             </List>
             <Snackbar
-                message="Reload the page to restore default media key behaviour"
+                message={chrome.i18n.getMessage("reload")}
                 open={this.state.showSnackbar}
                 onClose={ () => this.closeSnackBar() }
                 autoHideDuration={AUTO_HIDE_SNACKBAR_SEC*1000}

@@ -23,7 +23,7 @@ image=$1
 
 if $(grep -q "\.png$" <(printf $image)); then
 	function convertDim(){
-		convert $image -resize $1x$1 $outDir/${image%%.png}$1.png
+		convert $image -resize $1x$1 $outDir/icon$1.png
 	}
 	convertDim 16
 	convertDim 48

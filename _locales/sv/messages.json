@@ -1,11 +1,11 @@
 {
   "minutesToSkip": {
-    "message": "Minuter att skippa",
-    "description": "Label for time skip input"
+    "message": "Minuter att skippa"
   },
   "validRange": {
-    "message": "Tillåtet intervall: ",
-    "description": "Partial error label for time skip input"
+    "message": "Tillåtet intervall: "
+  },
+  "reload": {
+    "message": "Ladda om sidan för att återställa normalt beteende för media knapparna"
   }
-
 }
