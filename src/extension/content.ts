@@ -37,9 +37,16 @@ const setupContentListener = () => {
                             // inside the content-script if no error occured
                             switch (message.key){
                                 case STORAGE_KEYS.timeSkipEnabled:
-                                    // Setup the timeskip feature if the
-                                    // newState was the 'active' state
-                                    setupTimeSkip();
+                                    if (message.value){
+                                        setupTimeSkip();
+                                    }
+                                    else {
+                                        // Explicitly disable the media key handlers
+                                        // To restore default behaviour the user will need to reload the page 
+                                        DEBUG && console.log("Disabling mediakey timeskip"); 
+                                        navigator.mediaSession.setActionHandler('previoustrack', null);
+                                        navigator.mediaSession.setActionHandler('nexttrack', null); 
+                                    }
                                     break;
                             }
                         }

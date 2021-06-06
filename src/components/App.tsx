@@ -56,13 +56,17 @@ export default class App extends React.Component<AppProps,Settings> {
         // actual page in the browser
         
         chrome.tabs.query({currentWindow: true, active: true}, (tabs) => {
-            chrome.tabs.sendMessage(tabs[0].id,  {
-                action: CONTENT_MESSAGE.featureToggle, 
-                key: key, 
-                value: value 
-            }, (res) => {
-                chromeMessageErrorOccured(CONTENT_MESSAGE.featureToggle, res);
-            });
+            // We can send a message to every returned tab, all tabs where an
+            // instance of the content-script is running will be updated
+            for (let tab of tabs){
+                chrome.tabs.sendMessage(tab?.id,  {
+                    action: CONTENT_MESSAGE.featureToggle, 
+                    key: key, 
+                    value: value 
+                }, (res) => {
+                    chromeMessageErrorOccured(CONTENT_MESSAGE.featureToggle, res);
+                });
+            }
         });
         
         // Update the state (and implicitly the UI) of the extension page
@@ -72,12 +76,14 @@ export default class App extends React.Component<AppProps,Settings> {
     handleSliderUpdate(newMinutes: number) {
         
         chrome.tabs.query({currentWindow: true, active: true}, (tabs) => {
-            chrome.tabs.sendMessage(tabs[0].id,  {
-                action: CONTENT_MESSAGE.setSkipValue, 
-                value: newMinutes 
-            }, (res) => {
-                chromeMessageErrorOccured(CONTENT_MESSAGE.featureToggle, res);
-            });
+            for (let tab of tabs){
+                chrome.tabs.sendMessage(tab?.id,  {
+                    action: CONTENT_MESSAGE.setSkipValue, 
+                    value: newMinutes 
+                }, (res) => {
+                    chromeMessageErrorOccured(CONTENT_MESSAGE.setSkipValue, res);
+                });
+            }
         });
         
         // Always update the UI so that the error and help text can be displayed
@@ -85,6 +91,7 @@ export default class App extends React.Component<AppProps,Settings> {
     }
 
     render(){
+        // Localisation: https://developer.chrome.com/docs/extensions/reference/in/
         return <ThemeProvider theme={this.props.theme}>
         <CssBaseline>
             <List>

@@ -3,8 +3,9 @@ import { Settings } from "../models/Settings";
 import { ShortcutKey } from "../models/ShortcutKey";
 import { chromeMessageErrorOccured } from "./helper";
 
-// Activates action handlers for the skip and rewind media keys if the corresponding
-// setting is active. **NOTE** that the setup will not work until the YT video has begun playing
+// Setup action handlers for the skip and rewind media keys in accordance with the
+// settings value inside chrome.storage.local. 
+// **NOTE** that the setup will not work until the YT video has begun playing
 export const setupTimeSkip = () => {
     
     chrome.runtime.sendMessage( { action: BKG_MESSAGE.getSettings }, (extSettings: Settings) => {
@@ -14,24 +15,21 @@ export const setupTimeSkip = () => {
             if (extSettings?.timeSkipEnabled) {
                 // Activate the timeSkip feature if the extension's settings
                 // has it enabled
-                if ('mediaSession' in navigator) {
-                    let minutesToSkip = extSettings?.minutesToSkip != undefined ? 
-                        extSettings.minutesToSkip : DEFAULT_SKIP_MINUTES ;
-                    
-                    console.log(`Enabling timeskip: ${minutesToSkip} minutes`);
+                let minutesToSkip = extSettings?.minutesToSkip != undefined ? 
+                    extSettings.minutesToSkip : DEFAULT_SKIP_MINUTES ;
+                
+                DEBUG && console.log(`Enabling timeskip: ${minutesToSkip} minutes`);
 
-                    navigator.mediaSession.setActionHandler('previoustrack', () => { 
-                        DEBUG && console.log("==>PREV<==");
-                        timeSkip(REWIND_KEY, minutesToSkip);
-                    });
-                    navigator.mediaSession.setActionHandler('nexttrack', () => { 
-                        DEBUG && console.log("==>NEXT<=="); 
-                        timeSkip(SKIP_KEY, minutesToSkip);
-                    });
-                }
-                else { console.error("No mediaSession available"); }
+                navigator.mediaSession.setActionHandler('previoustrack', () => { 
+                    DEBUG && console.log("==>PREV<==");
+                    timeSkip(REWIND_KEY, minutesToSkip);
+                });
+                navigator.mediaSession.setActionHandler('nexttrack', () => { 
+                    DEBUG && console.log("==>NEXT<=="); 
+                    timeSkip(SKIP_KEY, minutesToSkip);
+                });
             }
-            else { console.log("Timeskip disabled"); }
+            // Maintain the default behaviour of the mediaKeys if the extension is disabled
         }
     });
 }

@@ -11,10 +11,6 @@ import "./popup.scss"
 import {createMuiTheme} from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
-
-// Localisation: https://developer.chrome.com/docs/extensions/reference/in/
-// Mutli-tab support?
-
 function Popup(extSettings: Settings) {
     // We use this wrapper because we 
     // need to enclose hooks like .useMemo() inside a function component
