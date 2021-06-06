@@ -34,7 +34,8 @@ export default class NumericField extends React.Component<NumericProps> {
                 }}
                 error={ !validateMinutes(this.props.minutes) }
                 helperText={ validateMinutes(this.props.minutes) ? "" :
-                    "Valid range: "+MIN_SKIP_MINUTES+"-"+MAX_SKIP_MINUTES+" min"
+                    chrome.i18n.getMessage("validRange") +
+                    +MIN_SKIP_MINUTES+"-"+MAX_SKIP_MINUTES+" min"
                 }
             />
         </form>

@@ -2,5 +2,10 @@
   "minutesToSkip": {
     "message": "Minuter att skippa",
     "description": "Label for time skip input"
+  },
+  "validRange": {
+    "message": "Tillåtet intervall: ",
+    "description": "Partial error label for time skip input"
   }
+
 }
