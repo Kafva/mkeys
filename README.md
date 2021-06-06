@@ -1,6 +1,8 @@
 # yt-man
 Browser extension to enable time based skips in YouTube videos using the *next-track* and *previous-track* media keys. 
 
+<img src=".github/screenshot.png" width="600px">
+
 ## Installation
 Install all dependencies and build the project with
 
@@ -25,4 +27,4 @@ yarn debug
 in another terminal. This will launch a chromium executable with the extension pre-installed and upon a new build from Webpack, the extension will be automatically re-installed.
 
 ## Notes
-The extension does not maintain separate states if there are several YouTube tabs, i.e. if you disable extension in one tab it will be disabled everywhere. Changes to the 'enabled' state and the numeric timeskip value thus send a signal to every tab instead of just affecting the active tab (see the `handle*` methods in `src/components/App.tsx`). 
+The extension does not maintain separate states if there are several YouTube tabs, i.e. if the extension is disabled in one tab it will be disabled everywhere. Changes to the 'enabled' state and the numeric timeskip value send a signal to every tab instead of just affecting the active tab (see the `handle*` methods in `./src/components/App.tsx` for more details). 
