@@ -1,16 +1,9 @@
 import React from "react"
 import Switch from '@material-ui/core/Switch';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import { SvgIconComponent } from "@material-ui/icons";
-import { DEBUG } from "../extension/config";
 
 type SwitchProps = {
     storageKey: string // Using 'key' as the prop name causes weird behaviour
-    text: string
     on: boolean
-    icon?: SvgIconComponent
     handleChange: Function
 }
 
@@ -21,16 +14,7 @@ export default class FeatureSwitch extends React.Component<SwitchProps> {
     }
     
     render() {
-        const Icon = this.props.icon;
-
-        return <ListItem>
-            {Icon != null && 
-               <ListItemIcon> 
-                   <Icon/>
-               </ListItemIcon> 
-            }
-            <ListItemText primary={this.props.text + (false ? " - " + (this.props.on ? "(on)" : "(off)") : "") }/>    
-            <Switch 
+        return <Switch 
                 checked={this.props.on}
                 color="primary"
                 onChange={ () => {
@@ -39,6 +23,5 @@ export default class FeatureSwitch extends React.Component<SwitchProps> {
                     ) 
                 }}
             />
-        </ListItem> 
     }
 }

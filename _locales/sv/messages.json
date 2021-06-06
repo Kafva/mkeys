@@ -1,10 +1,6 @@
 {
-  "toggleTimeSkip": {
-    "message": "Time skip",
-    "description": "Label for time skip feature switch"
-  },
   "minutesToSkip": {
-    "message": "Minutes to skip",
-    "description": "Label for time skip slider"
+    "message": "Minuter att skippa",
+    "description": "Label for time skip input"
   }
 }

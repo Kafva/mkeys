@@ -53,6 +53,20 @@ chrome.runtime.onMessage.addListener( (message, sender, sendResponse) => {
     
     switch (message?.action) {
         case BKG_MESSAGE.pageLoaded:
+            
+            chrome.tabs.query({currentWindow: true}, (tabs) => {
+                // Mark a tab as active when the popup is opened for the
+                // first time, at the sime time register an event listener
+                // on the page to unset the global flag when the window is closed
+
+                console.log("TABS", tabs);
+                //for(let tab of tabs){
+                //    chrome.tabs.executeScript(tab.id, {code: ""}, function(result) {
+                //      console.log("There are " + result.length + " execution contexts");
+                //    });            
+                //}
+            })
+
             sendResponse({message: "Background script is running", success: true});
             break;
         case BKG_MESSAGE.getSettings:

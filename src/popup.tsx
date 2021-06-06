@@ -64,6 +64,7 @@ chrome.tabs.query( {currentWindow: true, active: true}, (tabs) => {
                     // Render the popup in the response handler of the action which fetches
                     // the extension settings
                     if (!chromeMessageErrorOccured(BKG_MESSAGE.getSettings, extSettings)){
+                         
                         ReactDOM.render(
                             <Popup {...extSettings} />, 
                             document.querySelector('#app')

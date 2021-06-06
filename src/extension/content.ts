@@ -11,7 +11,7 @@ const setupContentListener = () => {
     // To interact with the actual webpage from events in the extension page
     // we need to add a listener for the content script
     chrome.runtime.onMessage.addListener( (message, sender, sendResponse) => {
-        console.log("(content) In listener:", message);
+        DEBUG && console.log("(content) In listener:", message);
         
         switch (message?.action) {
             case CONTENT_MESSAGE.ping:
@@ -94,13 +94,31 @@ chrome.runtime.sendMessage({ action: BKG_MESSAGE.pageLoaded }, () => {
         
         if (document.readyState === "complete") {
             
+            // Requires host permissions to all frames
+            //window.onbeforeunload = (e) => {
+            //     e = e || window.event;
+
+            //     // For IE and Firefox prior to version 4
+            //     if (e) {
+            //         e.returnValue = 'Sure?';
+            //     }
+
+            //     // For Safari
+            //     return 'Sure?';
+            // }; 
+            //window.onbeforeunload = (e) => {
+            //    confirm("Are you sure?");
+            //}
+            
             clearInterval(readyCheckId);
-            console.log("Content script running...");
+            console.log("yt-man is running...");
+            
             
             setupContentListener(); 
 
             // Short wait before activating the time skip feature
             await new Promise(r => setTimeout(r, 2000));
+             
             setupTimeSkip(); 
         }
     })
