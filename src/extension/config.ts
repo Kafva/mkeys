@@ -5,7 +5,6 @@ export const MAX_SKIP_MINUTES = 30;
 export const MIN_SKIP_MINUTES = 1;
 export const DEFAULT_SKIP_MINUTES = 1;
 
-
 // Utilises the default shortcuts on YT to skip/rewind 5s
 export const REWIND_KEY: ShortcutKey =  {
     key: 'ArrowLeft',
@@ -18,10 +17,18 @@ export const SKIP_KEY: ShortcutKey = {
     keyCode: 39,
 }
 
-export const MESSAGE = {
+export const CONTENT_MESSAGE = {
+    /**** content-script ****/
+    ping: "ping",
+    featureToggle: "featureToggle",
+    setSkipValue: "setSkipValue" 
+}
+
+export const BKG_MESSAGE = {
+    /**** background-script ****/
     pageLoaded: "loaded",
     getSettings: "getSettings",
-    setSettings: "setSettings"
+    setSettings: "setSettings",
 };
 
 export const STORAGE_KEYS = {

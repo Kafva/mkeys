@@ -1,36 +1,16 @@
-import { DEBUG, DEFAULT_SKIP_MINUTES, MESSAGE, REWIND_KEY, SKIP_KEY, STORAGE_KEYS } from "../extension/config";
+import { DEBUG, DEFAULT_SKIP_MINUTES, BKG_MESSAGE, REWIND_KEY, SKIP_KEY, STORAGE_KEYS } from "../extension/config";
 import { Settings } from "../models/Settings";
 import { ShortcutKey } from "../models/ShortcutKey";
-
-export const setSkipMinutes = (newMinutes: number) => {
-    // Set the new skip value in the extension settings
-    // through a message to the background script
-    chrome.runtime.sendMessage({
-        action: MESSAGE.setSettings, 
-        key: STORAGE_KEYS.minutesToSkip, 
-        value: newMinutes
-    }, (response) => {
-        // Once the update has finished re-initalise the
-        // event listeners to set the new value for the handlers
-        console.log("res", response);
-        console.log(`Reseting timeskip with: ${newMinutes} minutes`);
-        setupTimeSkip();
-    });
-}
+import { chromeMessageErrorOccured } from "./helper";
 
 // Activates action handlers for the skip and rewind media keys if the corresponding
 // setting is active. **NOTE** that the setup will not work until the YT video has begun playing
 export const setupTimeSkip = () => {
     
-    chrome.runtime.sendMessage( { action: MESSAGE.getSettings }, (extSettings: Settings) => {
-        
-        if ( extSettings == undefined ){
-            // The response is undefined if an error occurs in the reciever
-            console.error(`Error occcured fetching '${STORAGE_KEYS.timeSkipEnabled}':`, 
-                chrome.runtime.lastError?.message
-            );
-        }
-        else {
+    chrome.runtime.sendMessage( { action: BKG_MESSAGE.getSettings }, (extSettings: Settings) => {
+       
+        if ( !chromeMessageErrorOccured(BKG_MESSAGE.getSettings, extSettings) ){
+
             if (extSettings?.timeSkipEnabled) {
                 // Activate the timeSkip feature if the extension's settings
                 // has it enabled

@@ -17,7 +17,10 @@
       "service_worker": "background.js"
     },
     "permissions": [
-      "storage"
+      "storage" 
+    ],
+    "host_permissions": [
+      "https://www.youtube.com/watch?v=*"      
     ],
     "content_security_policy": {
       "default-src": "self"
@@ -25,7 +28,7 @@
     "content_scripts": [
       {
         "matches": [
-          "https://*.youtube.com/*"
+          "https://www.youtube.com/watch?v=*"
         ],
         "js": [
           "content.js"

@@ -1,5 +1,6 @@
-import { MESSAGE, STORAGE_KEYS } from './config';
+import { BKG_MESSAGE, CONTENT_MESSAGE, STORAGE_KEYS } from './config';
 import { Settings } from '../models/Settings';
+import { chromeMessageErrorOccured } from '../util/helper';
 
 // Service workers can NOT access the DOM directly
 //  https://developers.google.com/web/fundamentals/primers/service-workers
@@ -51,14 +52,17 @@ chrome.runtime.onMessage.addListener( (message, sender, sendResponse) => {
     console.log("In listener:", message);
     
     switch (message?.action) {
-        case MESSAGE.getSettings:
+        case BKG_MESSAGE.pageLoaded:
+            sendResponse({message: "Background script is running", success: true});
+            break;
+        case BKG_MESSAGE.getSettings:
             getSettings(message?.key)
                 .then( (extSettings) => {
                     console.log("Fetched settings:", extSettings);
                     sendResponse( extSettings ) 
                 });
             break;
-        case MESSAGE.setSettings:
+        case BKG_MESSAGE.setSettings:
             if ( message?.key != null && message?.value != null ){
                 console.log(`Trying to set ext[${message.key}] := ${message.value}`);
                 chrome.storage.local.set( { [message.key]: message.value}, () => {
@@ -69,7 +73,12 @@ chrome.runtime.onMessage.addListener( (message, sender, sendResponse) => {
             else { sendResponse({success: false}); }
             break;
         default:
-            sendResponse( {message: `Unknown message: '${message}'`});
+            // If we send a contentPing and the content-script is not running
+            // will recieve this message as a response in the popup
+            sendResponse( {
+                message: `Unknown message: '${JSON.stringify(message)}'`,
+                success: false
+            });
     }
     
     // Required: https://stackoverflow.com/questions/20077487/chrome-extension-message-passing-response-not-sent

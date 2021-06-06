@@ -14,10 +14,9 @@ import AvTimerIcon from '@material-ui/icons/AvTimer';
 import FeatureSwitch from './FeatureSwitch';
 import FeatureSlider from './FeatureSlider';
 import List from '@material-ui/core/List';
-import { DEBUG, DEFAULT_SKIP_MINUTES, MESSAGE, STORAGE_KEYS } from "../extension/config";
+import { CONTENT_MESSAGE, DEFAULT_SKIP_MINUTES, STORAGE_KEYS } from "../extension/config";
 import { Settings } from "../models/Settings";
-import { setSkipMinutes, setupTimeSkip } from "../util/timeskip";
-import { validateMinutes } from "../util/validation";
+import { chromeMessageErrorOccured } from "../util/helper";
 
 interface AppProps extends Settings {
     // The application will take all attributes from
@@ -52,36 +51,35 @@ export default class App extends React.Component<AppProps,Settings> {
     }
 
     handleFeatureToggle(key: string, value:any) {
-                    // ************* TODO we need to send a message to the
-                    // content script to run any function that interacts wiith tthe page!!!!!!
-                    // *******
-
-        // Update the back-end settings in the extension
-        chrome.runtime.sendMessage({
-            action: MESSAGE.setSettings, 
-            key: key, 
-            value: value 
-        }, (response) => {
-            DEBUG && console.log(`(${MESSAGE.setSettings}) Feature toggle response:`, response);
-            
-            switch (key){
-                case STORAGE_KEYS.timeSkipEnabled:
-                    // Setup the timeskip feature if the
-                    // newoState was the 'active' state
-                    value && setupTimeSkip();
-                    break;
-            }
+        // We need to send a message to the
+        // content-script to run any function that interacts with the
+        // actual page in the browser
+        
+        chrome.tabs.query({currentWindow: true, active: true}, (tabs) => {
+            chrome.tabs.sendMessage(tabs[0].id,  {
+                action: CONTENT_MESSAGE.featureToggle, 
+                key: key, 
+                value: value 
+            }, (res) => {
+                chromeMessageErrorOccured(CONTENT_MESSAGE.featureToggle, res);
+            });
         });
-
-        // Update the state (and implicitly the UI)
+        
+        // Update the state (and implicitly the UI) of the extension page
         this.setState( (state) => ({ [key]: value } as Settings) ) 
     }
     
     handleSliderUpdate(newMinutes: number) {
-        // Only update the settings if the value passes validation
-        validateMinutes(newMinutes) && 
-            setSkipMinutes(newMinutes)
-
+        
+        chrome.tabs.query({currentWindow: true, active: true}, (tabs) => {
+            chrome.tabs.sendMessage(tabs[0].id,  {
+                action: CONTENT_MESSAGE.setSkipValue, 
+                value: newMinutes 
+            }, (res) => {
+                chromeMessageErrorOccured(CONTENT_MESSAGE.featureToggle, res);
+            });
+        });
+        
         // Always update the UI so that the error and help text can be displayed
         this.setState( () => ({minutesToSkip: newMinutes || DEFAULT_SKIP_MINUTES} as Settings) )
     }
