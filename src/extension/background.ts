@@ -1,4 +1,4 @@
-import { BKG_MESSAGE, CONTENT_MESSAGE, STORAGE_KEYS } from './config';
+import { BKG_MESSAGE, CONTENT_MESSAGE, DEBUG, STORAGE_KEYS } from './config';
 import { Settings } from '../models/Settings';
 import { chromeMessageErrorOccured } from '../util/helper';
 
@@ -48,25 +48,10 @@ export const getSettings = (key: string = "") : Promise<Settings> => {
 chrome.runtime.onMessage.addListener( (message, sender, sendResponse) => {
     // We use regular Promise syntax since an async function for `addListener`
     // does not work: https://stackoverflow.com/questions/44056271/chrome-runtime-onmessage-response-with-async-await
-    const { tab, frameId } = sender 
-    console.log("In listener:", message);
-    
+    DEBUG && console.log("(background) In listener:", message);
+     
     switch (message?.action) {
         case BKG_MESSAGE.pageLoaded:
-            
-            chrome.tabs.query({currentWindow: true}, (tabs) => {
-                // Mark a tab as active when the popup is opened for the
-                // first time, at the sime time register an event listener
-                // on the page to unset the global flag when the window is closed
-
-                console.log("TABS", tabs);
-                //for(let tab of tabs){
-                //    chrome.tabs.executeScript(tab.id, {code: ""}, function(result) {
-                //      console.log("There are " + result.length + " execution contexts");
-                //    });            
-                //}
-            })
-
             sendResponse({message: "Background script is running", success: true});
             break;
         case BKG_MESSAGE.getSettings:

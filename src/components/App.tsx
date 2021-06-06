@@ -10,22 +10,30 @@ import {ThemeProvider, Theme} from '@material-ui/core/styles';
 import AvTimerIcon from '@material-ui/icons/AvTimer';
 
 /****** Components *********/
+import Snackbar from '@material-ui/core/Snackbar';
 import FeatureSwitch from './FeatureSwitch';
 import NumericField from './NumericField';
 import List from '@material-ui/core/List';
-import { CONTENT_MESSAGE, DEFAULT_SKIP_MINUTES, STORAGE_KEYS } from "../extension/config";
+import { AUTO_HIDE_SNACKBAR_SEC, CONTENT_MESSAGE, DEFAULT_SKIP_MINUTES, STORAGE_KEYS } from "../extension/config";
 import { Settings } from "../models/Settings";
 import { chromeMessageErrorOccured } from "../util/helper";
 import AppItem from "./AppItem";
+import { Button, IconButton } from "@material-ui/core";
+import CloseIcon from '@material-ui/icons/Close';
 
 interface AppProps extends Settings {
     // The application will take all attributes from
     // Settings along with the theme as props 
-    // The 'state' will only reflect the Settings though
+    // The 'state' will reflect the Settings along with other attributes 
     theme: Theme
 }
 
-export default class App extends React.Component<AppProps,Settings> {
+
+interface AppState extends Settings {
+    showSnackbar: boolean
+}
+
+export default class App extends React.Component<AppProps,AppState> {
 
     // Hooks: https://reactjs.org/docs/hooks-state.html
     // React promotes a design where the state is maintained above all components
@@ -40,7 +48,8 @@ export default class App extends React.Component<AppProps,Settings> {
         // Inital values for the state based on the props
         this.state = {
             timeSkipEnabled: props.timeSkipEnabled || false,
-            minutesToSkip: props.minutesToSkip || DEFAULT_SKIP_MINUTES
+            minutesToSkip: props.minutesToSkip || DEFAULT_SKIP_MINUTES,
+            showSnackbar: false
         }
         
         // This binding is necessary to make `this` work in the callback
@@ -54,9 +63,11 @@ export default class App extends React.Component<AppProps,Settings> {
         // content-script to run any function that interacts with the
         // actual page in the browser
         
-        chrome.tabs.query({currentWindow: true, active: true}, (tabs) => {
-            // We can send a message to every returned tab, all tabs where an
-            // instance of the content-script is running will be updated
+        chrome.tabs.query({currentWindow: true}, (tabs) => {
+            // We can send a message to every returned tab (not just the currently active
+            // one), all tabs where an instance of the content-script is running 
+            // will thus be updated. This means that we do NOT need to maintain different
+            // states for thhe the feature toggle per tab
             for (let tab of tabs){
                 chrome.tabs.sendMessage(tab?.id,  {
                     action: CONTENT_MESSAGE.featureToggle, 
@@ -69,13 +80,20 @@ export default class App extends React.Component<AppProps,Settings> {
         });
         
         // Update the state (and implicitly the UI) of the extension page
-        this.setState( (state) => ({ [key]: value } as Settings) ) 
+        this.setState( () => ({ [key]: value } as Settings) );
+
+        if (!value){
+            // Update the snackbar to notify the user if the feature was disabled
+            document.body.style.setProperty("height", "170px");
+            this.setState( () => ({ "showSnackbar": true }) );
+        }
     }
     
     handleNumericUpdate(newMinutes: number) {
         
-        chrome.tabs.query({currentWindow: true, active: true}, (tabs) => {
+        chrome.tabs.query({currentWindow: true }, (tabs) => {
             for (let tab of tabs){
+                // Send an update signal to every tab
                 chrome.tabs.sendMessage(tab?.id,  {
                     action: CONTENT_MESSAGE.setSkipValue, 
                     value: newMinutes 
@@ -87,6 +105,11 @@ export default class App extends React.Component<AppProps,Settings> {
         
         // Always update the UI so that the error and help text can be displayed
         this.setState( () => ({minutesToSkip: newMinutes || DEFAULT_SKIP_MINUTES} as Settings) )
+    }
+
+    closeSnackBar(){
+        this.setState( () => ({ "showSnackbar": false }) )        
+        document.body.style.setProperty("height", ""); // Default back to `min-size`
     }
 
     render(){
@@ -109,9 +132,26 @@ export default class App extends React.Component<AppProps,Settings> {
                 />
             </AppItem>
             </List>
+            <Snackbar
+                message="Reload the page to restore default media key behaviour"
+                open={this.state.showSnackbar}
+                onClose={ () => this.closeSnackBar() }
+                autoHideDuration={AUTO_HIDE_SNACKBAR_SEC*1000}
+                anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "center"
+                }}
+                action={
+                    <IconButton 
+                        size="small" aria-label="close" color="inherit" 
+                        onClick={ () => this.closeSnackBar() }
+                    >
+                        <CloseIcon fontSize="small"/>
+                    </IconButton>
+                }
+            />
         </CssBaseline>
         </ThemeProvider>
     }
-
 }
 

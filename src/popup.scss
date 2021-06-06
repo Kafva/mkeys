@@ -1,8 +1,11 @@
 body {
-    min-width: 150px;
-    min-height: 150px;
-    
     width: 250px;
-    height: 150px;
+    height: 100px;
+    min-height: 100px;
+
+    .MuiSnackbar-root {
+        // Spacing between snackbar and list
+        margin-top: 20px;
+    }
 }
 

@@ -46,12 +46,15 @@ function Popup(extSettings: Settings) {
 // clicked on at sites where it should not not run 
 
 chrome.tabs.query( {currentWindow: true, active: true}, (tabs) => {
+    // The 'active' parameter ensures that we only recieve the current tab
+    // in the response
     // The "tabs" permission is needed to read the url etc. of tabs
     if (tabs.length > 0) {
         
         chrome.tabs.sendMessage(tabs[0].id,  {action: CONTENT_MESSAGE.ping}, (res) => {
             // Ping the content script and only render the popup if the
-            // content script responds (i.e. if we are on of the pages defined for the
+            // content script on the current page responds  
+            // (i.e. if we are on of the pages defined for the
             // matches in the manifest.json)
             
             if (chromeMessageErrorOccured(CONTENT_MESSAGE.ping, res) || res?.success == false){

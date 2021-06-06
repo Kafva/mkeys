@@ -5,6 +5,8 @@ export const MAX_SKIP_MINUTES = 30;
 export const MIN_SKIP_MINUTES = 1;
 export const DEFAULT_SKIP_MINUTES = 1;
 
+export const AUTO_HIDE_SNACKBAR_SEC = 4;
+
 // Utilises the default shortcuts on YT to skip/rewind 5s
 export const REWIND_KEY: ShortcutKey =  {
     key: 'ArrowLeft',
