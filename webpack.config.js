@@ -1,6 +1,3 @@
-// Build for Firefox
-//  web-ext sign --api-key $(cat $MOZILLA_ISSUER) --api-secret $(cat $MOZILLA_JWT)
-
 const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const DefinePlugin = require('webpack').DefinePlugin;
@@ -60,7 +57,12 @@ module.exports = {
 				{ from: 'icons', to: 'icons' },
 				{ from: '_locales', to: '_locales' },
 				{ from: './src/popup.html', to: 'popup.html' },
-				{ from: './src/manifest.json', to: 'manifest.json' },
+				{ from: 
+          process.env.V2 != null ?
+            './src/manifest.v2.json' : 
+            './src/manifest.json', 
+          to: 'manifest.json' 
+        },
 			],
 		}),
 		new DefinePlugin({

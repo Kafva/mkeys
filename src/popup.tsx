@@ -1,5 +1,7 @@
-import React from 'react';
+import React, {Suspense} from 'react';
 import ReactDOM from 'react-dom';
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { chromeMessageErrorOccured } from './util/helper';
 import { Settings, CONTENT_MESSAGE, BKG_MESSAGE } from './types';
@@ -8,6 +10,14 @@ import { Settings, CONTENT_MESSAGE, BKG_MESSAGE } from './types';
 import './popup.scss';
 import { createMuiTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
+
+// To automatically produce a seperate file (chunk) in the output from
+// webpack we use a dynamic import, in this case we get a seperate
+// file named app.chunk.js in the output. This aids in preventing
+// the bundle size of popup.js from being to big
+const App = React.lazy(
+    () => import(/* webpackChunkName: "app" */ './components/App')
+);
 
 function Popup(extSettings: Settings) {
 	// We use this wrapper because we
@@ -31,18 +41,20 @@ function Popup(extSettings: Settings) {
 			}),
 		[prefersDarkMode]
 	);
-
-	// To automatically produce a seperate file (chunk) in the output from
-	// webpack we use a dynamic import, in this case we get a seperate
-	// file named app.chunk.js in the output. This aids in preventing
-	// the bundle size of popup.js from being to big
-	const App = React.lazy(
-		() => import(/* webpackChunkName: "app" */ './components/App')
-	);
-
+    
 	// The app receives the theme and the extension settings as
 	// props during its creation
-	return <App {...extSettings} theme={theme} />;
+    
+    // We need a fallback UI option to render when using lazy loading
+    // for the <App/> component
+	return <Suspense fallback={
+                <Backdrop open={true}>
+                  <CircularProgress color="inherit"/>
+                </Backdrop>
+            }>
+                <App {...extSettings} theme={theme} />;
+          </Suspense>
+    
 }
 
 // The "matches" key of the content-script in the manifest doesn't automatically
@@ -50,6 +62,9 @@ function Popup(extSettings: Settings) {
 // the content script from running. There probably is a way of greying out the
 // extension automatically but for now I disable it manually when the popup is
 // clicked on at sites where it should not not run
+
+// This mainly applies for manifest V3, with V2 it seems like the page_action
+// can be used to disable the popup on all pages except the matches
 
 chrome.tabs.query({ currentWindow: true, active: true }, (tabs) => {
 	// The 'active' parameter ensures that we only receive the current tab
@@ -68,8 +83,11 @@ chrome.tabs.query({ currentWindow: true, active: true }, (tabs) => {
 				chromeMessageErrorOccured(CONTENT_MESSAGE.ping, res) ||
 				res?.success == false
 			) {
-				// The .disable() action will grey out the badge for the extension
-				chrome.action.disable(tabId);
+                try {
+                    // The .disable() action will grey out the badge for the extension
+                    chrome.action.disable(tabId);
+                }
+                catch (e){ console.error(e); }
 				window.close();
 			} else {
 				chrome.runtime.sendMessage(
@@ -80,7 +98,7 @@ chrome.tabs.query({ currentWindow: true, active: true }, (tabs) => {
 						if (
 							!chromeMessageErrorOccured(BKG_MESSAGE.getSettings, extSettings)
 						) {
-							ReactDOM.render(
+                            ReactDOM.render(
 								<Popup {...extSettings} />,
 								document.querySelector('#app')
 							);

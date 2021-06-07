@@ -56,7 +56,7 @@ chrome.runtime.onMessage.addListener(
 				});
 				break;
 			case BKG_MESSAGE.getSettings:
-				getSettings(message?.key).then((extSettings) => {
+				getSettings(message?.key).then((extSettings: Settings) => {
 					DEBUG && console.log('Fetched settings:', extSettings);
 					sendResponse(extSettings);
 				});

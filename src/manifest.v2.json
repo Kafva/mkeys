@@ -1,0 +1,29 @@
+{
+	"name": "mkeys",
+	"version": "1.0.0",
+	"manifest_version": 2,
+	"description": "Browser extension to enable time based skips in YouTube videos using the next-track and previous-track media keys",
+	"icons": {
+		"16": "icons/icon16.png",
+		"48": "icons/icon48.png",
+		"128": "icons/icon128.png"
+	},
+	"default_locale": "en",
+	"background": {
+		"scripts": ["background.js"]
+	},
+	"permissions": ["storage","https://www.youtube.com/watch?v=*"],
+	"content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+	"content_scripts": [
+		{
+			"run_at": "document_start",
+			"matches": ["https://www.youtube.com/watch?v=*"],
+			"js": ["content.js"]
+		}
+	],
+	"browser_action": {
+		"default_icon": "icons/icon48.png",
+		"default_title": "mkeys",
+		"default_popup": "popup.html"
+	}
+}

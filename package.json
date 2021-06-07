@@ -10,7 +10,8 @@
 		"lint": "eslint . --ext 'ts,tsx,js,jsx'",
 		"pwrite": "prettier --write . ; true",
 		"pcheck": "prettier --check . ; true",
-		"analyze": "webpack --progress --profile --json > stats.json && webpack-bundle-analyzer stats.json"
+		"analyze": "webpack --progress --profile --json > stats.json && webpack-bundle-analyzer stats.json",
+    	"firefox": "V2=1 webpack --mode production --config webpack.config.js && web-ext build -s dist && web-ext sign -s dist --api-key $(cat $MOZILLA_ISSUER) --api-secret $(cat $MOZILLA_JWT)"
 	},
 	"keywords": [],
 	"author": "",

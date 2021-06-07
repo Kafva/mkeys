@@ -6,34 +6,23 @@ import { SvgIconComponent } from '@material-ui/icons';
 // a plain .ts extension
 // https://github.com/TypeStrong/ts-loader/issues/1036#issuecomment-630179801
 
-export interface Settings {
-	timeSkipEnabled: boolean;
-	minutesToSkip: number;
-}
-
-export interface ShortcutKey {
-	key: string;
-	code: string;
-	keyCode: number;
-}
-
 /***** Extension API messaging ******/
 export enum STORAGE_KEYS {
-	timeSkipEnabled = 't',
-	minutesToSkip = 'm',
+	timeSkipEnabled = 'timeSkipEnabled',
+	minutesToSkip = 'minutesToSkip',
 }
 
 // Union type
 export type MESSAGE = CONTENT_MESSAGE | BKG_MESSAGE;
 
 export enum CONTENT_MESSAGE {
-	ping,
+	ping = 0,
 	featureToggle,
 	setSkipValue,
 }
 
 export enum BKG_MESSAGE {
-	pageLoaded,
+	pageLoaded = 3,
 	getSettings,
 	setSettings,
 }
@@ -76,9 +65,9 @@ export type AppItemProps = {
 };
 
 export type SwitchProps = {
-	storageKey: string; // Using 'key' as the prop name causes weird behaviour
+	storageKey: STORAGE_KEYS; // Using 'key' as the prop name causes weird behaviour
 	on: boolean;
-	handleChange: (key: string, value: boolean | string) => void;
+	handleChange: (key: STORAGE_KEYS, value: boolean|string) => void;
 };
 
 export type NumericProps = {
@@ -87,3 +76,18 @@ export type NumericProps = {
 	disabled: boolean;
 	handleChange: (newNumber: number) => void;
 };
+
+/***** Misc *******/
+
+// Note that the keys must be the same as those defined
+// in the STORAGE_KEYS enum for parsing to work
+export interface Settings {
+	[STORAGE_KEYS.timeSkipEnabled]: boolean;
+	[STORAGE_KEYS.minutesToSkip]: number;
+}
+
+export interface ShortcutKey {
+	key: string;
+	code: string;
+	keyCode: number;
+}
