@@ -1,4 +1,4 @@
-# yt-man
+# mkeys
 Browser extension to enable time based skips in YouTube videos using the *next-track* and *previous-track* media keys. 
 
 <img src=".github/screenshot.png" width="600px">

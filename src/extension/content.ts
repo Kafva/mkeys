@@ -111,7 +111,7 @@ chrome.runtime.sendMessage({ action: BKG_MESSAGE.pageLoaded }, () => {
             //}
             
             clearInterval(readyCheckId);
-            console.log("yt-man is running...");
+            console.log("mkeys is running...");
             
             
             setupContentListener(); 

@@ -1,7 +1,7 @@
 {
-  "name": "yt-man",
+  "name": "mkeys",
   "version": "1.0.0",
-  "description": "Extension for time based skips with media keys on YouTube",
+  "description": "Browser extension to enable time based skips in YouTube videos using the next-track and previous-track media keys",
   "main": "index.js",
   "scripts": {
     "bundle": "webpack --mode production --config webpack.config.js",
