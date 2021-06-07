@@ -1,6 +1,5 @@
-import { BKG_MESSAGE, CONTENT_MESSAGE, DEBUG, STORAGE_KEYS } from './config';
+import { BKG_MESSAGE, DEBUG, STORAGE_KEYS } from './config';
 import { Settings } from '../models/Settings';
-import { chromeMessageErrorOccured } from '../util/helper';
 
 // Service workers can NOT access the DOM directly
 //  https://developers.google.com/web/fundamentals/primers/service-workers

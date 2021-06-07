@@ -6,12 +6,17 @@
   "scripts": {
     "release": "webpack --mode production --config webpack.config.js",
     "watch": "DEBUG=1 webpack --mode development -w --config webpack.config.js",
-    "debug": "web-ext run --args=' --lang en' -t chromium --chromium-binary /Applications/Chromium.app/Contents/MacOS/Chromium -s dist/ --reload --start-url 'https://www.youtube.com/watch?v=9jHwwJgSTR4' --chromium-profile ~/Library/Application\\ Support/Chromium/Default"
+    "debug": "web-ext run --args=' --lang en' -t chromium --chromium-binary /Applications/Chromium.app/Contents/MacOS/Chromium -s dist/ --reload --start-url 'https://www.youtube.com/watch?v=9jHwwJgSTR4' --chromium-profile ~/Library/Application\\ Support/Chromium/Default",
+    "lint": "eslint . --ext 'ts,tsx,js,jsx'"
   },
   "keywords": [],
   "author": "",
   "license": "MIT",
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.26.0",
+    "@typescript-eslint/parser": "^4.26.0",
+    "eslint": "^7.28.0",
+    "eslint-plugin-no-loops": "^0.3.0",
     "web-ext": "^6.1.0"
   },
   "dependencies": {
