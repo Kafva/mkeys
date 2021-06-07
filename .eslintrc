@@ -25,7 +25,8 @@
     },
     "plugins": [
         "react",
-        "@typescript-eslint"
+        "@typescript-eslint",
+        "no-loops"
     ],
     "rules" : {
         "prefer-arrow-callback": "warn",

@@ -45,6 +45,7 @@ const timeSkip = (key: ShortcutKey, minutesToSkip: number): void => {
     } as KeyboardEventInit);
     
     DEBUG && console.log(`Skipping -- ${minutesToSkip} minutes ${key.keyCode == 39 ? "forward" : "backwards"}`);
+    
     for (let i = 0; i <  minutesToSkip * 12; i++){
         // One skip is 5 seconds:
         //  60 sec => 12 skips
