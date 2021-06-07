@@ -11,7 +11,7 @@
 		"pwrite": "prettier --write . ; true",
 		"pcheck": "prettier --check . ; true",
 		"analyze": "webpack --progress --profile --json > stats.json && webpack-bundle-analyzer stats.json",
-    	"firefox": "rm -rf dist 2> /dev/null ; V2=1 webpack --mode production --config webpack.config.js && web-ext sign -s dist --api-key $(cat ~/Config/secret/mozilla_issuer) --api-secret $(cat ~/Config/secret/mozilla.jwt)"
+		"firefox": "rm -rf dist 2> /dev/null ; V2=1 webpack --mode production --config webpack.config.js && web-ext sign -s dist --api-key $(cat ~/Config/secret/mozilla_issuer) --api-secret $(cat ~/Config/secret/mozilla.jwt)"
 	},
 	"keywords": [],
 	"author": "",

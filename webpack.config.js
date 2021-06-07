@@ -57,12 +57,13 @@ module.exports = {
 				{ from: 'icons', to: 'icons' },
 				{ from: '_locales', to: '_locales' },
 				{ from: './src/popup.html', to: 'popup.html' },
-				{ from: 
-          process.env.V2 != null ?
-            './src/manifest.v2.json' : 
-            './src/manifest.json', 
-          to: 'manifest.json' 
-        },
+				{
+					from:
+						process.env.V2 != null
+							? './src/manifest.v2.json'
+							: './src/manifest.json',
+					to: 'manifest.json',
+				},
 			],
 		}),
 		new DefinePlugin({

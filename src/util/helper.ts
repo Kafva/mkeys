@@ -12,7 +12,8 @@ export const chromeMessageErrorOccured = (
 	response: ExtensionResponse,
 	key?: STORAGE_KEYS
 ): boolean => {
-	const completeAction = "action:"+action + (key != null ? ' key:' + key : '');
+	const completeAction =
+		'action:' + action + (key != null ? ' key:' + key : '');
 
 	if (response == undefined) {
 		// The response is undefined if an error occurs in the receiver

@@ -67,7 +67,7 @@ export type AppItemProps = {
 export type SwitchProps = {
 	storageKey: STORAGE_KEYS; // Using 'key' as the prop name causes weird behaviour
 	on: boolean;
-	handleChange: (key: STORAGE_KEYS, value: boolean|string) => void;
+	handleChange: (key: STORAGE_KEYS, value: boolean | string) => void;
 };
 
 export type NumericProps = {

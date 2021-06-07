@@ -12,7 +12,7 @@
 	"background": {
 		"scripts": ["background.js"]
 	},
-	"permissions": ["storage","https://www.youtube.com/watch?v=*"],
+	"permissions": ["storage", "https://www.youtube.com/watch?v=*"],
 	"content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
 	"content_scripts": [
 		{

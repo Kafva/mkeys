@@ -1,4 +1,4 @@
-import React, {Suspense} from 'react';
+import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -16,7 +16,7 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 // file named app.chunk.js in the output. This aids in preventing
 // the bundle size of popup.js from being to big
 const App = React.lazy(
-    () => import(/* webpackChunkName: "app" */ './components/App')
+	() => import(/* webpackChunkName: "app" */ './components/App')
 );
 
 function Popup(extSettings: Settings) {
@@ -41,20 +41,23 @@ function Popup(extSettings: Settings) {
 			}),
 		[prefersDarkMode]
 	);
-    
+
 	// The app receives the theme and the extension settings as
 	// props during its creation
-    
-    // We need a fallback UI option to render when using lazy loading
-    // for the <App/> component
-	return <Suspense fallback={
-                <Backdrop open={true}>
-                  <CircularProgress color="inherit"/>
-                </Backdrop>
-            }>
-                <App {...extSettings} theme={theme} />;
-          </Suspense>
-    
+
+	// We need a fallback UI option to render when using lazy loading
+	// for the <App/> component
+	return (
+		<Suspense
+			fallback={
+				<Backdrop open={true}>
+					<CircularProgress color="inherit" />
+				</Backdrop>
+			}
+		>
+			<App {...extSettings} theme={theme} />;
+		</Suspense>
+	);
 }
 
 // The "matches" key of the content-script in the manifest doesn't automatically
@@ -83,11 +86,12 @@ chrome.tabs.query({ currentWindow: true, active: true }, (tabs) => {
 				chromeMessageErrorOccured(CONTENT_MESSAGE.ping, res) ||
 				res?.success == false
 			) {
-                try {
-                    // The .disable() action will grey out the badge for the extension
-                    chrome.action.disable(tabId);
-                }
-                catch (e){ console.error(e); }
+				try {
+					// The .disable() action will grey out the badge for the extension
+					chrome.action.disable(tabId);
+				} catch (e) {
+					console.error(e);
+				}
 				window.close();
 			} else {
 				chrome.runtime.sendMessage(
@@ -98,7 +102,7 @@ chrome.tabs.query({ currentWindow: true, active: true }, (tabs) => {
 						if (
 							!chromeMessageErrorOccured(BKG_MESSAGE.getSettings, extSettings)
 						) {
-                            ReactDOM.render(
+							ReactDOM.render(
 								<Popup {...extSettings} />,
 								document.querySelector('#app')
 							);

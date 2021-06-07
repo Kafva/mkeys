@@ -127,7 +127,7 @@ export default class App extends React.Component<AppProps, AppState> {
 					<List>
 						<AppItem icon={AvTimerIcon}>
 							<NumericField
-                                text={chrome.i18n.getMessage('minutesToSkip')}
+								text={chrome.i18n.getMessage('minutesToSkip')}
 								disabled={!this.state.timeSkipEnabled}
 								minutes={this.state.minutesToSkip}
 								handleChange={this.handleNumericUpdate}
