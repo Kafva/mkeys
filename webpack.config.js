@@ -23,14 +23,19 @@ module.exports = {
     },
 
     resolve: {
-        extensions: [".ts", ".tsx", ".js", ".d.ts"]
+        extensions: [".ts", ".tsx", ".js"]
     },
 
     module: {
         rules: [
             {
                 // TS(X) loader
-                test: /(\.d)?\.tsx?$/, 
+                // Note that we do not want to emit the 
+                // *.d.ts declaration file, the declerations under 
+                // @types are included through tsconfig.json and not
+                // through webpack 
+                //test: /([^\.][^d])\.tsx?$/, 
+                test: /\.tsx?$/, 
                 loader: "ts-loader" 
             },
             {

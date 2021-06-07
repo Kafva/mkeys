@@ -1,6 +1,11 @@
 import {Theme} from '@material-ui/core/styles';
 import {SvgIconComponent} from "@material-ui/icons";
 
+// This file should preferably have the extension *.d.ts since it contains
+// type declerations but webpack refuses to include it properly without 
+// a plain .ts extension 
+// https://github.com/TypeStrong/ts-loader/issues/1036#issuecomment-630179801
+
 export interface Settings {
     timeSkipEnabled: boolean,
     minutesToSkip: number,
@@ -19,7 +24,7 @@ export enum STORAGE_KEYS {
 }
 
 // Union type
-type MESSAGE = CONTENT_MESSAGE|BKG_MESSAGE;
+export type MESSAGE = CONTENT_MESSAGE|BKG_MESSAGE;
 
 export enum CONTENT_MESSAGE {
     ping,
@@ -33,16 +38,16 @@ export enum BKG_MESSAGE {
     setSettings
 }
 
-interface BasicResponse {
+export interface BasicResponse {
     success: boolean
     message?: string
 }
 
 // The type used for messages sent from chrome.*.onMessage.addListener()
 // It can either contain a message/status or a Settings object
-type ExtensionResponse = BasicResponse|Settings;
+export type ExtensionResponse = BasicResponse|Settings;
 
-type ExtensionRequest = {
+export type ExtensionRequest = {
     // The type used for messages sent with chrome.*.sendMessage()
     action: MESSAGE
     
@@ -54,29 +59,29 @@ type ExtensionRequest = {
 
 /***** React states and props ******/
 
-interface AppState extends Settings {
+export interface AppState extends Settings {
     // The 'state' will reflect the Settings along with the
     // flag that determines if the snackbar is visible 
     showSnackbar: boolean
 }
 
-interface AppProps extends Settings {
+export interface AppProps extends Settings {
     // The application will take all attributes from
     // Settings along with the theme as props 
     theme: Theme
 }
 
-type AppItemProps = {
+export type AppItemProps = {
     icon?: SvgIconComponent 
 }
 
-type SwitchProps = {
+export type SwitchProps = {
     storageKey: string // Using 'key' as the prop name causes weird behaviour
     on: boolean
     handleChange: (key: string, value: boolean|string) => void
 }
 
-type NumericProps = {
+export type NumericProps = {
     text: string
     minutes: number
     disabled: boolean

@@ -1,2 +1,0 @@
-/*** Styling ****/
-import "./popup.scss";
