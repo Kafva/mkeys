@@ -1,6 +1,10 @@
 import { ShortcutKey } from "../models/ShortcutKey";
 
-export const DEBUG = true;
+// Set the DEBUG variable based on if DEBUG is set in the enviroment
+// when webpack is invoked
+export const DEBUG = process.env.DEBUG == null 
+    ? false : true;
+
 export const MAX_SKIP_MINUTES = 30;
 export const MIN_SKIP_MINUTES = 1;
 export const DEFAULT_SKIP_MINUTES = 1;

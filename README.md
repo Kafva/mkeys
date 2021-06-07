@@ -7,7 +7,7 @@ Browser extension to enable time based skips in YouTube videos using the *next-t
 Install all dependencies and build the project with
 
 ```bash
-yarn && npx webpack
+yarn && yarn release
 ```
 
 Upon success, the files for the extension will reside under `./dist/`. To install the extension in a Chromium based browser go to `chrome://extensions`, enable *Developer mode*, click *Load unpacked* and choose the `dist` folder.
@@ -16,7 +16,7 @@ Upon success, the files for the extension will reside under `./dist/`. To instal
 To debug the extension during development, open `package.json` and modify the values for `--chromium-binary` and `--chromium-profile` inside the `debug` task in accordance with your environment. Next run
 
 ```bash
-npx webpack -w
+yarn watch 
 ```
 
 to automatically rebuild the project whenever changes to the source files are detected and invoke

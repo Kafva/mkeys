@@ -18,7 +18,7 @@ export const setupTimeSkip = () => {
                 let minutesToSkip = extSettings?.minutesToSkip != undefined ? 
                     extSettings.minutesToSkip : DEFAULT_SKIP_MINUTES ;
                 
-                DEBUG && console.log(`Enabling timeskip: ${minutesToSkip} minutes`);
+                console.log(`Enabling timeskip: ${minutesToSkip} minutes`);
 
                 navigator.mediaSession.setActionHandler('previoustrack', () => { 
                     DEBUG && console.log("==>PREV<==");
@@ -37,7 +37,7 @@ export const setupTimeSkip = () => {
 const timeSkip = (key: ShortcutKey, minutesToSkip: number) => {
     // We do not want to fetch the current minutesToSkip value for every
     // call to this function, to update how many seconds are skipped we instead
-    // re-run thhe setup function when the config changes
+    // re-run the setup function when the config changes
     const keyboardEvent = new KeyboardEvent('keydown', {
         bubbles: true,
         ...key 

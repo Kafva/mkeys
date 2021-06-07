@@ -33,8 +33,8 @@ const setupContentListener = () => {
                         value: message.value 
                     }, (response) => {
                         if ( !chromeMessageErrorOccured(BKG_MESSAGE.setSettings, response, message.key) ){
-                            // Upon successfully setting the value proced to perform the neccessary function
-                            // inside the content-script if no error occured
+                            // Upon successfully setting the value proceed to perform the necessary function
+                            // inside the content-script if no error occurred
                             switch (message.key){
                                 case STORAGE_KEYS.timeSkipEnabled:
                                     if (message.value){
@@ -43,7 +43,7 @@ const setupContentListener = () => {
                                     else {
                                         // Explicitly disable the media key handlers
                                         // To restore default behaviour the user will need to reload the page 
-                                        DEBUG && console.log("Disabling mediakey timeskip"); 
+                                        console.log("Disabling timeskip"); 
                                         navigator.mediaSession.setActionHandler('previoustrack', null);
                                         navigator.mediaSession.setActionHandler('nexttrack', null); 
                                     }
@@ -64,7 +64,7 @@ const setupContentListener = () => {
                         value: message.value
                     }, (response) => {
                         if (!chromeMessageErrorOccured(BKG_MESSAGE.setSettings, response, STORAGE_KEYS.minutesToSkip)){
-                            // Once the update has finished re-initalise the
+                            // Once the update has finished re-initialise the
                             // event listeners to set the new value for the handlers
                             setupTimeSkip();
                         }
@@ -94,25 +94,8 @@ chrome.runtime.sendMessage({ action: BKG_MESSAGE.pageLoaded }, () => {
         
         if (document.readyState === "complete") {
             
-            // Requires host permissions to all frames
-            //window.onbeforeunload = (e) => {
-            //     e = e || window.event;
-
-            //     // For IE and Firefox prior to version 4
-            //     if (e) {
-            //         e.returnValue = 'Sure?';
-            //     }
-
-            //     // For Safari
-            //     return 'Sure?';
-            // }; 
-            //window.onbeforeunload = (e) => {
-            //    confirm("Are you sure?");
-            //}
-            
             clearInterval(readyCheckId);
             console.log("mkeys is running...");
-            
             
             setupContentListener(); 
 

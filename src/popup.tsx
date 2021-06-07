@@ -34,7 +34,7 @@ function Popup(extSettings: Settings) {
         [prefersDarkMode]
     );
     
-    // The app recieves the theme and the extension settings as
+    // The app receives the theme and the extension settings as
     // props during its creation
     return <App {...extSettings} theme={theme}/>
 }
@@ -46,7 +46,7 @@ function Popup(extSettings: Settings) {
 // clicked on at sites where it should not not run 
 
 chrome.tabs.query( {currentWindow: true, active: true}, (tabs) => {
-    // The 'active' parameter ensures that we only recieve the current tab
+    // The 'active' parameter ensures that we only receive the current tab
     // in the response
     // The "tabs" permission is needed to read the url etc. of tabs
     if (tabs.length > 0) {

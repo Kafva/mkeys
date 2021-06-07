@@ -9,7 +9,7 @@ export const chromeMessageErrorOccured = (action: string, response: any, key?: s
     let completeAction = action + (key != null ? " " + key : "");
 
     if ( response == undefined ){
-        // The response is undefined if an error occurs in the reciever
+        // The response is undefined if an error occurs in the receiver
         console.error(`Error in response for '${completeAction}' action:`, 
             chrome.runtime.lastError?.message
         );

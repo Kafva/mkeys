@@ -7,14 +7,6 @@ import { chromeMessageErrorOccured } from '../util/helper';
 // To view the devtools for the background worker:
 //  https://stackoverflow.com/questions/10257301/accessing-console-and-devtools-of-extensions-background-js
 
-//chrome.runtime.onInstalled.addListener(function() {
-//    chrome.contextMenus.create({
-//      "id": "sampleContextMenu",
-//      "title": "Sample Context Menu",
-//      "contexts": ["selection"]
-//    });
-//});
-
 // Returns a Settings object with the value for the specified key,
 // passing null will return a Settings object with all attributes
 export const getSettings = (key: string = "") : Promise<Settings> => {
@@ -26,7 +18,7 @@ export const getSettings = (key: string = "") : Promise<Settings> => {
                 // Filter out the attributes needed for the Settings object
                 .filter( key => Object.keys(STORAGE_KEYS).includes(key) )
                 .reduce( (obj, key) => {
-                    // The `obj` paramter in the callback function is the
+                    // The `obj` parameter in the callback function is the
                     // accumulator which will get updated with each
                     // iteration and the `key` parameter will go over
                     // each value that was present in the `STORAGE_KEYS`
@@ -35,7 +27,7 @@ export const getSettings = (key: string = "") : Promise<Settings> => {
                         ...obj, [key]: result[key]
                     }
                 }, 
-                // The inital value for the `reduce` call is set to an empty '{}'
+                // The initial value for the `reduce` call is set to an empty '{}'
                 // which we fill out with each iteration
                 {}
             ) as Settings;
@@ -57,15 +49,15 @@ chrome.runtime.onMessage.addListener( (message, sender, sendResponse) => {
         case BKG_MESSAGE.getSettings:
             getSettings(message?.key)
                 .then( (extSettings) => {
-                    console.log("Fetched settings:", extSettings);
+                    DEBUG && console.log("Fetched settings:", extSettings);
                     sendResponse( extSettings ) 
                 });
             break;
         case BKG_MESSAGE.setSettings:
             if ( message?.key != null && message?.value != null ){
-                console.log(`Trying to set ext[${message.key}] := ${message.value}`);
                 chrome.storage.local.set( { [message.key]: message.value}, () => {
-                    console.log(`Set ext[${message.key}] := ${message.value}`);
+                    
+                    DEBUG && console.log(`Set ext[${message.key}] := ${message.value}`);
                     sendResponse({success: true});
                 });
             } 
@@ -73,7 +65,7 @@ chrome.runtime.onMessage.addListener( (message, sender, sendResponse) => {
             break;
         default:
             // If we send a contentPing and the content-script is not running
-            // will recieve this message as a response in the popup
+            // will receive this message as a response in the popup
             sendResponse( {
                 message: `Unknown message: '${JSON.stringify(message)}'`,
                 success: false

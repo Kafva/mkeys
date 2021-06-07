@@ -1,9 +1,15 @@
+// Build for Firefox
+//  web-ext sign --api-key $(cat ../secrets/mozilla_issuer) --api-secret $(cat ../secrets/mozilla.jwt)
+
 const path = require('path');
-const CopyWebpackPlugin = require('copy-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const DefinePlugin = require('webpack').DefinePlugin;
 
 module.exports = {
-    mode: "development",
-    devtool: "inline-source-map",
+    mode:  "production", // Pass [--env development] to webpack to modify
+    // The inline-source-map infers a considerably bigger bundle and is only
+    // relevant for an easier debugging experience
+    devtool:  process.env.DEBUG ? "inline-source-map" : false,
 
     entry: {
         content: './src/extension/content.ts',       // Script that can interact with the page
@@ -51,5 +57,8 @@ module.exports = {
             { from: "./src/manifest.json", to: "manifest.json" }
           ],
         }),
+      new DefinePlugin({
+        'process.env.DEBUG': JSON.stringify(process.env.DEBUG),
+      })
     ] 
 };

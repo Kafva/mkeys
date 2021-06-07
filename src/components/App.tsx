@@ -18,18 +18,19 @@ import { AUTO_HIDE_SNACKBAR_SEC, CONTENT_MESSAGE, DEFAULT_SKIP_MINUTES, STORAGE_
 import { Settings } from "../models/Settings";
 import { chromeMessageErrorOccured } from "../util/helper";
 import AppItem from "./AppItem";
-import { Button, IconButton } from "@material-ui/core";
+import { IconButton } from "@material-ui/core";
 import CloseIcon from '@material-ui/icons/Close';
 
 interface AppProps extends Settings {
     // The application will take all attributes from
     // Settings along with the theme as props 
-    // The 'state' will reflect the Settings along with other attributes 
     theme: Theme
 }
 
 
 interface AppState extends Settings {
+    // The 'state' will reflect the Settings along with the
+    // flag that determines if the snackbar is visible 
     showSnackbar: boolean
 }
 
@@ -40,12 +41,12 @@ export default class App extends React.Component<AppProps,AppState> {
     // which depend on the state, these components can then be redrawn with new props
     // when the state changes
     //  https://reactjs.org/docs/thinking-in-react.html
-    // Therefore we maintain the 'minutes to skip' and 'toggle status' of the
-    // timeskip feature in the App rather than inside the NumericField/Switches
+    // We therefore maintain the 'minutes to skip' and 'toggle status' of the
+    // timeskip feature in the 'App' rather than inside the NumericField/Switch
     
     constructor(props: AppProps) {
         super(props);
-        // Inital values for the state based on the props
+        // Initial values for the state based on the props
         this.state = {
             timeSkipEnabled: props.timeSkipEnabled || false,
             minutesToSkip: props.minutesToSkip || DEFAULT_SKIP_MINUTES,
@@ -64,10 +65,10 @@ export default class App extends React.Component<AppProps,AppState> {
         // actual page in the browser
         
         chrome.tabs.query({currentWindow: true}, (tabs) => {
-            // We can send a message to every returned tab (not just the currently active
+            // We send a message to every returned tab (not just the currently active
             // one), all tabs where an instance of the content-script is running 
             // will thus be updated. This means that we do NOT need to maintain different
-            // states for thhe the feature toggle per tab
+            // states for the feature toggle per tab
             for (let tab of tabs){
                 chrome.tabs.sendMessage(tab?.id,  {
                     action: CONTENT_MESSAGE.featureToggle, 

@@ -4,8 +4,8 @@
   "description": "Browser extension to enable time based skips in YouTube videos using the next-track and previous-track media keys",
   "main": "index.js",
   "scripts": {
-    "bundle": "webpack --mode production --config webpack.config.js",
-    "watch": "webpack --mode development -w --config webpack.config.dev.js",
+    "release": "webpack --mode production --config webpack.config.js",
+    "watch": "DEBUG=1 webpack --mode development -w --config webpack.config.js",
     "debug": "web-ext run --args=' --lang en' -t chromium --chromium-binary /Applications/Chromium.app/Contents/MacOS/Chromium -s dist/ --reload --start-url 'https://www.youtube.com/watch?v=9jHwwJgSTR4' --chromium-profile ~/Library/Application\\ Support/Chromium/Default"
   },
   "keywords": [],
