@@ -1,6 +1,7 @@
 import { setupTimeSkip } from '../util/timeskip';
 import { chromeMessageErrorOccured, validateMinutes } from '../util/helper';
-import { DEBUG, BKG_MESSAGE, CONTENT_MESSAGE, STORAGE_KEYS  } from './config';
+import { DEBUG } from './config';
+import {BKG_MESSAGE, CONTENT_MESSAGE, STORAGE_KEYS} from '../types';
 
 // Note that Firefox has both the browser.* (webextension-polyfill-ts)
 // and chrome.* APIs defined, the main difference is that the browser.*
@@ -90,7 +91,7 @@ const setupContentListener = () => {
 chrome.runtime.sendMessage({ action: BKG_MESSAGE.pageLoaded }, () => {
     // `setInterval` returns an Id which we can pass to `clearInterval`
     // to deactivate the repeated checks for the readyState of the document
-    var readyCheckId = setInterval( async () => {
+    const readyCheckId = setInterval( async () => {
         
         if (document.readyState === "complete") {
             

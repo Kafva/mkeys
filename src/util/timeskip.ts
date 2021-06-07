@@ -1,22 +1,23 @@
-import { DEBUG, DEFAULT_SKIP_MINUTES, BKG_MESSAGE, REWIND_KEY, SKIP_KEY, STORAGE_KEYS } from "../extension/config";
-import { Settings } from "../models/Settings";
-import { ShortcutKey } from "../models/ShortcutKey";
+import { DEBUG, Config, REWIND_KEY, SKIP_KEY } from "../extension/config";
+import { Settings, BKG_MESSAGE, ShortcutKey, ExtensionResponse } from "../types";
 import { chromeMessageErrorOccured } from "./helper";
 
 // Setup action handlers for the skip and rewind media keys in accordance with the
 // settings value inside chrome.storage.local. 
 // **NOTE** that the setup will not work until the YT video has begun playing
-export const setupTimeSkip = () => {
+export const setupTimeSkip = ():void => {
     
-    chrome.runtime.sendMessage( { action: BKG_MESSAGE.getSettings }, (extSettings: Settings) => {
+    chrome.runtime.sendMessage( { action: BKG_MESSAGE.getSettings }, (extSettings: ExtensionResponse) => {
        
         if ( !chromeMessageErrorOccured(BKG_MESSAGE.getSettings, extSettings) ){
+            
+            extSettings = (extSettings as Settings);
 
             if (extSettings?.timeSkipEnabled) {
                 // Activate the timeSkip feature if the extension's settings
                 // has it enabled
-                let minutesToSkip = extSettings?.minutesToSkip != undefined ? 
-                    extSettings.minutesToSkip : DEFAULT_SKIP_MINUTES ;
+                const minutesToSkip = extSettings?.minutesToSkip != undefined ? 
+                    extSettings?.minutesToSkip : Config.DEFAULT_SKIP_MINUTES ;
                 
                 console.log(`Enabling timeskip: ${minutesToSkip} minutes`);
 
@@ -34,7 +35,7 @@ export const setupTimeSkip = () => {
     });
 }
 
-const timeSkip = (key: ShortcutKey, minutesToSkip: number) => {
+const timeSkip = (key: ShortcutKey, minutesToSkip: number): void => {
     // We do not want to fetch the current minutesToSkip value for every
     // call to this function, to update how many seconds are skipped we instead
     // re-run the setup function when the config changes

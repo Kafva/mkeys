@@ -4,7 +4,7 @@ import React from "react"
 // The CssBaseline component is needed to apply theme settings globally,
 // without it the background of the <body> will not be updated
 import CssBaseline from '@material-ui/core/CssBaseline';
-import {ThemeProvider, Theme} from '@material-ui/core/styles';
+import {ThemeProvider} from '@material-ui/core/styles';
 
 /***** Icons *******/
 import AvTimerIcon from '@material-ui/icons/AvTimer';
@@ -14,25 +14,14 @@ import Snackbar from '@material-ui/core/Snackbar';
 import FeatureSwitch from './FeatureSwitch';
 import NumericField from './NumericField';
 import List from '@material-ui/core/List';
-import { AUTO_HIDE_SNACKBAR_SEC, CONTENT_MESSAGE, DEFAULT_SKIP_MINUTES, STORAGE_KEYS } from "../extension/config";
-import { Settings } from "../models/Settings";
+import { Config } from "../extension/config";
+import { Settings, AppProps, AppState, CONTENT_MESSAGE, STORAGE_KEYS } from "../types";
 import { chromeMessageErrorOccured } from "../util/helper";
 import AppItem from "./AppItem";
 import { IconButton } from "@material-ui/core";
 import CloseIcon from '@material-ui/icons/Close';
 
-interface AppProps extends Settings {
-    // The application will take all attributes from
-    // Settings along with the theme as props 
-    theme: Theme
-}
 
-
-interface AppState extends Settings {
-    // The 'state' will reflect the Settings along with the
-    // flag that determines if the snackbar is visible 
-    showSnackbar: boolean
-}
 
 export default class App extends React.Component<AppProps,AppState> {
 
@@ -49,7 +38,7 @@ export default class App extends React.Component<AppProps,AppState> {
         // Initial values for the state based on the props
         this.state = {
             timeSkipEnabled: props.timeSkipEnabled || false,
-            minutesToSkip: props.minutesToSkip || DEFAULT_SKIP_MINUTES,
+            minutesToSkip: props.minutesToSkip || Config.DEFAULT_SKIP_MINUTES,
             showSnackbar: false
         }
         
@@ -59,7 +48,7 @@ export default class App extends React.Component<AppProps,AppState> {
         this.handleNumericUpdate  = this.handleNumericUpdate.bind(this);
     }
 
-    handleFeatureToggle(key: string, value:any) {
+    handleFeatureToggle(key: string, value: boolean|string): void {
         // We need to send a message to the
         // content-script to run any function that interacts with the
         // actual page in the browser
@@ -69,7 +58,7 @@ export default class App extends React.Component<AppProps,AppState> {
             // one), all tabs where an instance of the content-script is running 
             // will thus be updated. This means that we do NOT need to maintain different
             // states for the feature toggle per tab
-            for (let tab of tabs){
+            tabs.forEach( (tab) => {
                 chrome.tabs.sendMessage(tab?.id,  {
                     action: CONTENT_MESSAGE.featureToggle, 
                     key: key, 
@@ -77,11 +66,11 @@ export default class App extends React.Component<AppProps,AppState> {
                 }, (res) => {
                     chromeMessageErrorOccured(CONTENT_MESSAGE.featureToggle, res);
                 });
-            }
+            })
         });
         
         // Update the state (and implicitly the UI) of the extension page
-        this.setState( () => ({ [key]: value } as Settings) );
+        this.setState( () => ({ [key]: value } as unknown as AppState) );
 
         if (!value){
             // Update the snackbar to notify the user if the feature was disabled
@@ -90,10 +79,10 @@ export default class App extends React.Component<AppProps,AppState> {
         }
     }
     
-    handleNumericUpdate(newMinutes: number) {
+    handleNumericUpdate(newMinutes: number): void {
         
         chrome.tabs.query({currentWindow: true }, (tabs) => {
-            for (let tab of tabs){
+            tabs.forEach( (tab) => {
                 // Send an update signal to every tab
                 chrome.tabs.sendMessage(tab?.id,  {
                     action: CONTENT_MESSAGE.setSkipValue, 
@@ -101,19 +90,19 @@ export default class App extends React.Component<AppProps,AppState> {
                 }, (res) => {
                     chromeMessageErrorOccured(CONTENT_MESSAGE.setSkipValue, res);
                 });
-            }
+            });
         });
         
         // Always update the UI so that the error and help text can be displayed
-        this.setState( () => ({minutesToSkip: newMinutes || DEFAULT_SKIP_MINUTES} as Settings) )
+        this.setState( () => ({minutesToSkip: newMinutes || Config.DEFAULT_SKIP_MINUTES} as Settings) )
     }
 
-    closeSnackBar(){
+    closeSnackBar(): void {
         this.setState( () => ({ "showSnackbar": false }) )        
         document.body.style.setProperty("height", ""); // Default back to `min-size`
     }
 
-    render(){
+    render(): JSX.Element {
         // Localisation: https://developer.chrome.com/docs/extensions/reference/in/
         return <ThemeProvider theme={this.props.theme}>
         <CssBaseline>
@@ -137,7 +126,7 @@ export default class App extends React.Component<AppProps,AppState> {
                 message={chrome.i18n.getMessage("reload")}
                 open={this.state.showSnackbar}
                 onClose={ () => this.closeSnackBar() }
-                autoHideDuration={AUTO_HIDE_SNACKBAR_SEC*1000}
+                autoHideDuration={Config.AUTO_HIDE_SNACKBAR_SEC*1000}
                 anchorOrigin={{
                     vertical: "bottom",
                     horizontal: "center"

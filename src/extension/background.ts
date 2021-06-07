@@ -1,5 +1,5 @@
-import { BKG_MESSAGE, DEBUG, STORAGE_KEYS } from './config';
-import { Settings } from '../models/Settings';
+import { DEBUG  } from './config';
+import { ExtensionRequest, STORAGE_KEYS, BKG_MESSAGE, Settings } from '../types';
 
 // Service workers can NOT access the DOM directly
 //  https://developers.google.com/web/fundamentals/primers/service-workers
@@ -8,12 +8,12 @@ import { Settings } from '../models/Settings';
 
 // Returns a Settings object with the value for the specified key,
 // passing null will return a Settings object with all attributes
-export const getSettings = (key: string = "") : Promise<Settings> => {
+export const getSettings = (key = "") : Promise<Settings> => {
     
     return new Promise( (resolve) => {
         chrome.storage.local.get( key == "" ? null : [key] , (result) => {
             // Fetch all keys from the storage of the extension if null is passed
-            let extSettings = Object.keys(result)
+            const extSettings = Object.keys(result)
                 // Filter out the attributes needed for the Settings object
                 .filter( key => Object.keys(STORAGE_KEYS).includes(key) )
                 .reduce( (obj, key) => {
@@ -36,7 +36,7 @@ export const getSettings = (key: string = "") : Promise<Settings> => {
     });
 }
 
-chrome.runtime.onMessage.addListener( (message, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener( (message: ExtensionRequest, sender, sendResponse) => {
     // We use regular Promise syntax since an async function for `addListener`
     // does not work: https://stackoverflow.com/questions/44056271/chrome-runtime-onmessage-response-with-async-await
     DEBUG && console.log("(background) In listener:", message);

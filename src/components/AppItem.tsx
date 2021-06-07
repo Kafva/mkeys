@@ -1,10 +1,6 @@
 import React from "react" 
-import { SvgIconComponent } from "@material-ui/icons";
 import { ListItem, ListItemIcon } from "@material-ui/core";
-
-type AppItemProps = {
-    icon?: SvgIconComponent 
-}
+import { AppItemProps } from '../types';
 
 export default class AppItem extends React.Component<AppItemProps> {
 
@@ -12,7 +8,7 @@ export default class AppItem extends React.Component<AppItemProps> {
         super(props);
     }
 
-    render(){
+    render(): JSX.Element {
         const Icon = this.props.icon;
 
         // We can insert any elements placed inside <AppItem>...</AppItem> using

@@ -1,12 +1,14 @@
-import { DEBUG, MAX_SKIP_MINUTES, MIN_SKIP_MINUTES } from "../extension/config";
+import { DEBUG, Config } from "../extension/config";
+import { ExtensionResponse, MESSAGE, STORAGE_KEYS } from "../types";
 
-export const validateMinutes = (minutes: number) => {
-    return MIN_SKIP_MINUTES <= minutes && minutes <= MAX_SKIP_MINUTES; 
+export const validateMinutes = (minutes: number): boolean => {
+    return Config.MIN_SKIP_MINUTES <= minutes && minutes <= Config.MAX_SKIP_MINUTES; 
 }
 
-export const chromeMessageErrorOccured = (action: string, response: any, key?: string) => {
+export const chromeMessageErrorOccured = 
+    (action: MESSAGE, response: ExtensionResponse, key?: STORAGE_KEYS): boolean => {
     
-    let completeAction = action + (key != null ? " " + key : "");
+    const completeAction = action + (key != null ? " " + key : "");
 
     if ( response == undefined ){
         // The response is undefined if an error occurs in the receiver

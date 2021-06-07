@@ -23,14 +23,14 @@ module.exports = {
     },
 
     resolve: {
-        extensions: [".ts", ".tsx", ".js"]
+        extensions: [".ts", ".tsx", ".js", ".d.ts"]
     },
 
     module: {
         rules: [
             {
                 // TS(X) loader
-                test: /\.tsx?$/, 
+                test: /(\.d)?\.tsx?$/, 
                 loader: "ts-loader" 
             },
             {

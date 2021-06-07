@@ -2,8 +2,7 @@ import React from "react"
 import ReactDOM from "react-dom"
 
 import { chromeMessageErrorOccured } from "./util/helper";
-import { CONTENT_MESSAGE, BKG_MESSAGE } from "./extension/config";
-import { Settings } from "./models/Settings";
+import { Settings, CONTENT_MESSAGE, BKG_MESSAGE } from "./types";
 import App from './components/App';
 
 /*** Styling ****/

@@ -1,26 +1,17 @@
 import React from "react"
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
 import TextField from '@material-ui/core/TextField';
-import { SvgIconComponent } from "@material-ui/icons";
-
-import { MIN_SKIP_MINUTES, MAX_SKIP_MINUTES } from '../extension/config';
+import { Config } from '../extension/config';
 import { validateMinutes } from "../util/helper";
+import { NumericProps } from "../types";
 
-type NumericProps = {
-    text: string
-    minutes: number
-    disabled: boolean
-    handleChange: Function
-}
 
 export default class NumericField extends React.Component<NumericProps> {
 
-    constructor(props) {
+    constructor(props: NumericProps) {
         super(props);
     }
 
-    render() {
+    render(): JSX.Element {
         return <form noValidate autoComplete="off">
             <TextField
                 label={this.props.text}
@@ -28,14 +19,17 @@ export default class NumericField extends React.Component<NumericProps> {
                 disabled={this.props.disabled}
                 type="number"
                 value={this.props.minutes}
-                onChange={ (event:any) => {
+                onChange={ (event: React.ChangeEvent<HTMLTextAreaElement> ) => {
                     /**** Callback to root component to update state ****/
-                    this.props.handleChange(event.target.value)
+                    const newNumber = parseInt(event.target.value);
+                    this.props.handleChange( 
+                        !isNaN(newNumber) ? newNumber : Config.DEFAULT_SKIP_MINUTES
+                    );
                 }}
                 error={ !validateMinutes(this.props.minutes) }
                 helperText={ validateMinutes(this.props.minutes) ? "" :
                     chrome.i18n.getMessage("validRange") +
-                    +MIN_SKIP_MINUTES+"-"+MAX_SKIP_MINUTES+" min"
+                    +Config.MIN_SKIP_MINUTES+"-"+Config.MAX_SKIP_MINUTES+" min"
                 }
             />
         </form>
