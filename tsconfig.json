@@ -1,24 +1,22 @@
 {
-    "compilerOptions": {
-        "outDir": "dist",
-        "strict": true,
-        "sourceMap": true,
-        "esModuleInterop": true, // https://stackoverflow.com/questions/56238356/understanding-esmoduleinterop-in-tsconfig-file
-        "target": "es6",
-        // For dynamic imports to result in automatic chunk splitting
-        // in webpack we need to set the 'module' output to 'esnext'
-        // https://github.com/Microsoft/TypeScript/issues/16820#issue-239453456
-        "module": "esnext", // The module key determines the format of the *OUTPUT*
-        "moduleResolution": "node",
-        "jsx": "react",
-        "typeRoots": [
-            // Since we can't use our own *.d.ts in the build with
-            // webpack we only use the default directory of types
-            // https://github.com/TypeStrong/ts-loader/issues/1036#issuecomment-630179801
-            "./node_modules/@types" 
-        ], 
-    },
-    "exclude": [
-        "node_modules",
-    ]
+	"compilerOptions": {
+		"outDir": "dist",
+		"strict": true,
+		"sourceMap": true,
+		"esModuleInterop": true, // https://stackoverflow.com/questions/56238356/understanding-esmoduleinterop-in-tsconfig-file
+		"target": "es6",
+		// For dynamic imports to result in automatic chunk splitting
+		// in webpack we need to set the 'module' output to 'esnext'
+		// https://github.com/Microsoft/TypeScript/issues/16820#issue-239453456
+		"module": "esnext", // The module key determines the format of the *OUTPUT*
+		"moduleResolution": "node",
+		"jsx": "react",
+		"typeRoots": [
+			// Since we can't use our own *.d.ts in the build with
+			// webpack we only use the default directory of types
+			// https://github.com/TypeStrong/ts-loader/issues/1036#issuecomment-630179801
+			"./node_modules/@types"
+		]
+	},
+	"exclude": ["node_modules"]
 }

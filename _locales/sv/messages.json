@@ -1,11 +1,11 @@
 {
-  "minutesToSkip": {
-    "message": "Minuter att skippa"
-  },
-  "validRange": {
-    "message": "Tillåtet intervall: "
-  },
-  "reload": {
-    "message": "Ladda om sidan för att återställa normalt beteende för media knapparna"
-  }
+	"minutesToSkip": {
+		"message": "Minuter att skippa"
+	},
+	"validRange": {
+		"message": "Tillåtet intervall: "
+	},
+	"reload": {
+		"message": "Ladda om sidan för att återställa normalt beteende för media knapparna"
+	}
 }

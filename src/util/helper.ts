@@ -1,24 +1,28 @@
-import { DEBUG, Config } from "../extension/config";
-import { ExtensionResponse, MESSAGE, STORAGE_KEYS } from "../types";
+import { DEBUG, Config } from '../extension/config';
+import { ExtensionResponse, MESSAGE, STORAGE_KEYS } from '../types';
 
 export const validateMinutes = (minutes: number): boolean => {
-    return Config.MIN_SKIP_MINUTES <= minutes && minutes <= Config.MAX_SKIP_MINUTES; 
-}
+	return (
+		Config.MIN_SKIP_MINUTES <= minutes && minutes <= Config.MAX_SKIP_MINUTES
+	);
+};
 
-export const chromeMessageErrorOccured = 
-    (action: MESSAGE, response: ExtensionResponse, key?: STORAGE_KEYS): boolean => {
-    
-    const completeAction = action + (key != null ? " " + key : "");
+export const chromeMessageErrorOccured = (
+	action: MESSAGE,
+	response: ExtensionResponse,
+	key?: STORAGE_KEYS
+): boolean => {
+	const completeAction = action + (key != null ? ' ' + key : '');
 
-    if ( response == undefined ){
-        // The response is undefined if an error occurs in the receiver
-        console.error(`Error in response for '${completeAction}' action:`, 
-            chrome.runtime.lastError?.message
-        );
-        return true;
-    }
-    else {
-        DEBUG && console.log(`(${completeAction}) response:`, response);
-        return false;
-    }
-}
+	if (response == undefined) {
+		// The response is undefined if an error occurs in the receiver
+		console.error(
+			`Error in response for '${completeAction}' action:`,
+			chrome.runtime.lastError?.message
+		);
+		return true;
+	} else {
+		DEBUG && console.log(`(${completeAction}) response:`, response);
+		return false;
+	}
+};
