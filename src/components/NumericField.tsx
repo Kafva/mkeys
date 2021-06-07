@@ -4,7 +4,6 @@ import { Config } from '../extension/config';
 import { validateMinutes } from "../util/helper";
 import { NumericProps } from "../types";
 
-
 export default class NumericField extends React.Component<NumericProps> {
 
     constructor(props: NumericProps) {

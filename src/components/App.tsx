@@ -59,7 +59,8 @@ export default class App extends React.Component<AppProps,AppState> {
             // will thus be updated. This means that we do NOT need to maintain different
             // states for the feature toggle per tab
             tabs.forEach( (tab) => {
-                chrome.tabs.sendMessage(tab?.id,  {
+                tab?.id != null &&
+                chrome.tabs.sendMessage(tab.id,  {
                     action: CONTENT_MESSAGE.featureToggle, 
                     key: key, 
                     value: value 
@@ -84,7 +85,8 @@ export default class App extends React.Component<AppProps,AppState> {
         chrome.tabs.query({currentWindow: true }, (tabs) => {
             tabs.forEach( (tab) => {
                 // Send an update signal to every tab
-                chrome.tabs.sendMessage(tab?.id,  {
+                tab?.id != null &&
+                chrome.tabs.sendMessage(tab.id,  {
                     action: CONTENT_MESSAGE.setSkipValue, 
                     value: newMinutes 
                 }, (res) => {

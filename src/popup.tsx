@@ -3,7 +3,6 @@ import ReactDOM from "react-dom"
 
 import { chromeMessageErrorOccured } from "./util/helper";
 import { Settings, CONTENT_MESSAGE, BKG_MESSAGE } from "./types";
-import App from './components/App';
 
 /*** Styling ****/
 import "./popup.scss"
@@ -33,6 +32,14 @@ function Popup(extSettings: Settings) {
         [prefersDarkMode]
     );
     
+    // To automatically produce a seperate file (chunk) in the output from
+    // webpack we use a dynamic import, in this case we get a seperate
+    // file named app.chunk.js in the output. This aids in preventing
+    // the bundle size of popup.js from being to big
+    const App = React.lazy( () => 
+        import(/* webpackChunkName: "app" */"./components/App")
+    );
+
     // The app receives the theme and the extension settings as
     // props during its creation
     return <App {...extSettings} theme={theme}/>
@@ -48,9 +55,11 @@ chrome.tabs.query( {currentWindow: true, active: true}, (tabs) => {
     // The 'active' parameter ensures that we only receive the current tab
     // in the response
     // The "tabs" permission is needed to read the url etc. of tabs
-    if (tabs.length > 0) {
+    const tabId = tabs[0]?.id != null ? tabs[0].id : -1;
+    
+    if (tabId != -1) {
         
-        chrome.tabs.sendMessage(tabs[0].id,  {action: CONTENT_MESSAGE.ping}, (res) => {
+        chrome.tabs.sendMessage(tabId,  {action: CONTENT_MESSAGE.ping}, (res) => {
             // Ping the content script and only render the popup if the
             // content script on the current page responds  
             // (i.e. if we are on of the pages defined for the
@@ -58,7 +67,7 @@ chrome.tabs.query( {currentWindow: true, active: true}, (tabs) => {
             
             if (chromeMessageErrorOccured(CONTENT_MESSAGE.ping, res) || res?.success == false){
                 // The .disable() action will grey out the badge for the extension
-                chrome.action.disable(tabs[0].id); 
+                chrome.action.disable(tabId); 
                 window.close();
             }
             else {

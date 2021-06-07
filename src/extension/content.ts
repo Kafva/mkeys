@@ -8,7 +8,7 @@ import {BKG_MESSAGE, CONTENT_MESSAGE, STORAGE_KEYS} from '../types';
 // API returns promises instead of relying on callbacks
 //  https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Chrome_incompatibilities#firefox_supports_both_the_chrome_and_browser_namespaces
 
-const setupContentListener = () => {
+const setupContentListener = (): void => {
     // To interact with the actual webpage from events in the extension page
     // we need to add a listener for the content script
     chrome.runtime.onMessage.addListener( (message, sender, sendResponse) => {
@@ -45,8 +45,8 @@ const setupContentListener = () => {
                                         // Explicitly disable the media key handlers
                                         // To restore default behaviour the user will need to reload the page 
                                         console.log("Disabling timeskip"); 
-                                        navigator.mediaSession.setActionHandler('previoustrack', null);
-                                        navigator.mediaSession.setActionHandler('nexttrack', null); 
+                                        navigator.mediaSession?.setActionHandler('previoustrack', null);
+                                        navigator.mediaSession?.setActionHandler('nexttrack', null); 
                                     }
                                     break;
                             }

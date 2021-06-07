@@ -1,5 +1,6 @@
 // Build for Firefox
 //  web-ext sign --api-key $(cat ../secrets/mozilla_issuer) --api-secret $(cat ../secrets/mozilla.jwt)
+//  web-ext sign --api-key $(cat $MOZILLA_ISSUER) --api-secret $(cat $MOZILLA_JWT)
 
 const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
@@ -14,12 +15,13 @@ module.exports = {
     entry: {
         content: './src/extension/content.ts',       // Script that can interact with the page
         background: './src/extension/background.ts', // Runs persistently in the background
-        popup: './src/popup.tsx',                    // The browser_action popup
+        popup: './src/popup.tsx', // The browser_action popup
     },
 
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: '[name].js'
+        filename: '[name].js',
+        chunkFilename: '[name].chunk.js',
     },
 
     resolve: {

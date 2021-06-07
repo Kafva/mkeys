@@ -7,7 +7,8 @@
     "release": "webpack --mode production --config webpack.config.js",
     "watch": "DEBUG=1 webpack --mode development -w --config webpack.config.js",
     "debug": "web-ext run --args=' --lang en' -t chromium --chromium-binary /Applications/Chromium.app/Contents/MacOS/Chromium -s dist/ --reload --start-url 'https://www.youtube.com/watch?v=9jHwwJgSTR4' --chromium-profile ~/Library/Application\\ Support/Chromium/Default",
-    "lint": "eslint . --ext 'ts,tsx,js,jsx'"
+    "lint": "eslint . --ext 'ts,tsx,js,jsx'",
+    "analyze": "webpack --progress --profile --json > stats.json && webpack-bundle-analyzer stats.json"
   },
   "keywords": [],
   "author": "",
@@ -16,13 +17,16 @@
     "@typescript-eslint/eslint-plugin": "^4.26.0",
     "@typescript-eslint/parser": "^4.26.0",
     "eslint": "^7.12.1",
+    "eslint-config-prettier": "^8.3.0",
     "eslint-config-standard": "^16.0.3",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-no-loops": "^0.3.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^5.0.0",
     "eslint-plugin-react": "^7.24.0",
-    "web-ext": "^6.1.0"
+    "prettier": "2.3.1",
+    "web-ext": "^6.1.0",
+    "webpack-bundle-analyzer": "^4.4.2"
   },
   "dependencies": {
     "@material-ui/core": "^4.11.4",

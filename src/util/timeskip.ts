@@ -21,11 +21,11 @@ export const setupTimeSkip = ():void => {
                 
                 console.log(`Enabling timeskip: ${minutesToSkip} minutes`);
 
-                navigator.mediaSession.setActionHandler('previoustrack', () => { 
+                navigator.mediaSession?.setActionHandler('previoustrack', () => { 
                     DEBUG && console.log("==>PREV<==");
                     timeSkip(REWIND_KEY, minutesToSkip);
                 });
-                navigator.mediaSession.setActionHandler('nexttrack', () => { 
+                navigator.mediaSession?.setActionHandler('nexttrack', () => { 
                     DEBUG && console.log("==>NEXT<=="); 
                     timeSkip(SKIP_KEY, minutesToSkip);
                 });
