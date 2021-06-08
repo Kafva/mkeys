@@ -90,9 +90,7 @@ chrome.tabs.query({ currentWindow: true, active: true }, (tabs) => {
 					// The .disable() action will grey out the badge for the extension
 					chrome.action.disable(tabId);
 				}
-				catch (e) {
-					console.error(e);
-				}
+				catch (e) { console.error(e); }
 				window.close();
 			}
 			else {
