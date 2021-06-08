@@ -22,7 +22,8 @@ export const chromeMessageErrorOccured = (
 			chrome.runtime.lastError?.message
 		);
 		return true;
-	} else {
+	}
+	else {
 		DEBUG && console.log(`(${completeAction}) response:`, response);
 		return false;
 	}

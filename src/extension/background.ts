@@ -49,35 +49,36 @@ chrome.runtime.onMessage.addListener(
 		DEBUG && console.log('(background) In listener:', message);
 
 		switch (message?.action) {
-			case BKG_MESSAGE.pageLoaded:
-				sendResponse({
-					message: 'Background script is running',
-					success: true,
+		case BKG_MESSAGE.pageLoaded:
+			sendResponse({
+				message: 'Background script is running',
+				success: true,
+			});
+			break;
+		case BKG_MESSAGE.getSettings:
+			getSettings(message?.key).then((extSettings: Settings) => {
+				DEBUG && console.log('Fetched settings:', extSettings);
+				sendResponse(extSettings);
+			});
+			break;
+		case BKG_MESSAGE.setSettings:
+			if (message?.key != null && message?.value != null) {
+				chrome.storage.local.set({ [message.key]: message.value }, () => {
+					DEBUG && console.log(`Set ext[${message.key}] := ${message.value}`);
+					sendResponse({ success: true });
 				});
-				break;
-			case BKG_MESSAGE.getSettings:
-				getSettings(message?.key).then((extSettings: Settings) => {
-					DEBUG && console.log('Fetched settings:', extSettings);
-					sendResponse(extSettings);
-				});
-				break;
-			case BKG_MESSAGE.setSettings:
-				if (message?.key != null && message?.value != null) {
-					chrome.storage.local.set({ [message.key]: message.value }, () => {
-						DEBUG && console.log(`Set ext[${message.key}] := ${message.value}`);
-						sendResponse({ success: true });
-					});
-				} else {
-					sendResponse({ success: false });
-				}
-				break;
-			default:
-				// If we send a contentPing and the content-script is not running
-				// will receive this message as a response in the popup
-				sendResponse({
-					message: `Unknown message: '${JSON.stringify(message)}'`,
-					success: false,
-				});
+			}
+			else {
+				sendResponse({ success: false });
+			}
+			break;
+		default:
+			// If we send a contentPing and the content-script is not running
+			// will receive this message as a response in the popup
+			sendResponse({
+				message: `Unknown message: '${JSON.stringify(message)}'`,
+				success: false,
+			});
 		}
 
 		// Required: https://stackoverflow.com/questions/20077487/chrome-extension-message-passing-response-not-sent

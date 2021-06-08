@@ -5,7 +5,8 @@
 		"es2021": true
 	},
 	"extends": [
-		"prettier",
+		// We don't use prettier
+		//	https://github.com/prettier/prettier/issues/840
 		"plugin:react/recommended",
 		"eslint:recommended",
 		"plugin:@typescript-eslint/eslint-recommended",
@@ -28,6 +29,7 @@
 	"rules": {
 		"prefer-arrow-callback": "warn",
 		"prefer-const": "warn",
-		"no-loops/no-loops": "warn"
+		"no-loops/no-loops": "warn",
+		"indent": ["error", "tab"]
 	}
 }

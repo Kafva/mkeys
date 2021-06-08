@@ -89,11 +89,13 @@ chrome.tabs.query({ currentWindow: true, active: true }, (tabs) => {
 				try {
 					// The .disable() action will grey out the badge for the extension
 					chrome.action.disable(tabId);
-				} catch (e) {
+				}
+				catch (e) {
 					console.error(e);
 				}
 				window.close();
-			} else {
+			}
+			else {
 				chrome.runtime.sendMessage(
 					{ action: BKG_MESSAGE.getSettings },
 					(extSettings: Settings) => {
@@ -111,7 +113,8 @@ chrome.tabs.query({ currentWindow: true, active: true }, (tabs) => {
 				);
 			}
 		});
-	} else {
+	}
+	else {
 		document.write('Could not read tabs');
 	}
 });
