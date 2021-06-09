@@ -55,7 +55,7 @@ function Popup(extSettings: Settings) {
 				</Backdrop>
 			}
 		>
-			<App {...extSettings} theme={theme} />;
+			<App {...extSettings} theme={theme} />
 		</Suspense>
 	);
 }
