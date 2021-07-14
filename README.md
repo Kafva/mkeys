@@ -1,4 +1,6 @@
-# mkeys
+<h1>
+	<img src="./icons/icon128.png">&nbsp;&nbsp;mkeys
+</h1>
 
 Browser extension to enable time based skips in YouTube videos using the _next-track_ and _previous-track_ media keys.
 
