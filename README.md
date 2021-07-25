@@ -20,7 +20,7 @@ Upon success, the files for the extension will reside under `./dist/`. To instal
 
 ### Firefox
 
-To use Firefox, create a developer account with Mozilla and generate an _issuer ID_ and _secret_ value for a new extension. Open `packges.json` and supply the issuer ID for the `--api-key` option and the secret value for the `--api-secret` in the `firefox` task. Once these parameters have been modified, the extension can be built and signed with
+To use Firefox, create a developer account with Mozilla and generate an _issuer ID_ and _secret_ value for a new extension. Open `package.json` and supply the issuer ID for the `--api-key` option and the secret value for the `--api-secret` in the `firefox` task. Once these parameters have been modified, the extension can be built and signed with
 
 ```bash
 yarn firefox
