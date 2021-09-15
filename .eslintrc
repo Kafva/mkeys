@@ -30,6 +30,7 @@
 		"prefer-arrow-callback": "warn",
 		"prefer-const": "warn",
 		"no-loops/no-loops": "warn",
-		"indent": ["error", "tab"]
+		"indent": ["error", "tab"],
+		"@typescript-eslint/no-explicit-any": "off"
 	}
 }

@@ -1,4 +1,4 @@
-import { DEBUG } from './config';
+import { debugLog } from '../util/helper';
 import {
 	ExtensionRequest,
 	STORAGE_KEYS,
@@ -46,7 +46,7 @@ chrome.runtime.onMessage.addListener(
 	(message: ExtensionRequest, sender, sendResponse) => {
 		// We use regular Promise syntax since an async function for `addListener`
 		// does not work: https://stackoverflow.com/questions/44056271/chrome-runtime-onmessage-response-with-async-await
-		DEBUG && console.log('(background) In listener:', message);
+		debugLog('(background) In listener:', message);
 
 		switch (message?.action) {
 		case BKG_MESSAGE.pageLoaded:
@@ -57,14 +57,14 @@ chrome.runtime.onMessage.addListener(
 			break;
 		case BKG_MESSAGE.getSettings:
 			getSettings(message?.key).then((extSettings: Settings) => {
-				DEBUG && console.log('Fetched settings:', extSettings);
+				debugLog('Fetched settings:', extSettings);
 				sendResponse(extSettings);
 			});
 			break;
 		case BKG_MESSAGE.setSettings:
 			if (message?.key != null && message?.value != null) {
 				chrome.storage.local.set({ [message.key]: message.value }, () => {
-					DEBUG && console.log(`Set ext[${message.key}] := ${message.value}`);
+					debugLog(`Set ext[${message.key}] := ${message.value}`);
 					sendResponse({ success: true });
 				});
 			}

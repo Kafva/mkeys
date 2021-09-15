@@ -5,7 +5,7 @@ import {
 	ShortcutKey,
 	ExtensionResponse,
 } from '../types';
-import { chromeMessageErrorOccured } from './helper';
+import { chromeMessageErrorOccured, debugLog } from './helper';
 
 // Setup action handlers for the skip and rewind media keys in accordance with the
 // settings value inside chrome.storage.local.
@@ -28,11 +28,11 @@ export const setupTimeSkip = (): void => {
 					console.log(`Enabling timeskip: ${minutesToSkip} minutes`);
 
 					navigator.mediaSession?.setActionHandler('previoustrack', () => {
-						DEBUG && console.log('==>PREV<==');
+						debugLog('==>PREV<==');
 						timeSkip(REWIND_KEY, minutesToSkip);
 					});
 					navigator.mediaSession?.setActionHandler('nexttrack', () => {
-						DEBUG && console.log('==>NEXT<==');
+						debugLog('==>NEXT<==');
 						timeSkip(SKIP_KEY, minutesToSkip);
 					});
 				}

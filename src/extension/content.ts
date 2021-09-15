@@ -1,7 +1,9 @@
 import { setupTimeSkip } from '../util/timeskip';
-import { chromeMessageErrorOccured, validateMinutes } from '../util/helper';
-import { DEBUG } from './config';
+import { chromeMessageErrorOccured, validateMinutes, debugLog } from '../util/helper';
+import { Config } from './config';
 import { BKG_MESSAGE, CONTENT_MESSAGE, STORAGE_KEYS } from '../types';
+
+let previous_video = ""
 
 // Note that Firefox has both the browser.* (webextension-polyfill-ts)
 // and chrome.* APIs defined, the main difference is that the browser.*
@@ -12,7 +14,7 @@ const setupContentListener = (): void => {
 	// To interact with the actual webpage from events in the extension page
 	// we need to add a listener for the content script
 	chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-		DEBUG && console.log('(content) In listener:', message);
+		debugLog('(content) In listener:', message);
 
 		switch (message?.action) {
 		case CONTENT_MESSAGE.ping:
@@ -111,23 +113,31 @@ const setupContentListener = (): void => {
 	});
 };
 
+/// Poll the website URL every X seconds and re-run the
+/// the setup if the URL changes (i.e. we visit another video)
+const extensionSetup = async () => {
+	const current_video = (new URL(window.location.href)).searchParams.get('v');
+
+	if ( current_video != null && current_video != previous_video ){
+		previous_video = current_video;
+		console.log(`Running mkeys setup for ${current_video}...`);
+		setupContentListener();
+		await new Promise((r) => setTimeout(r, 2000)); // Wait before activating keybinds
+		setupTimeSkip();
+	}
+	else { debugLog(`Not running setup on ${current_video}`); }
+}
+
 // The script execution starts from here, the content script is able to
 // interact with the DOM, the background script (service worker) can't
 // and is used to fetch relevant information
 chrome.runtime.sendMessage({ action: BKG_MESSAGE.pageLoaded }, () => {
 	// `setInterval` returns an Id which we can pass to `clearInterval`
 	// to deactivate the repeated checks for the readyState of the document
-	const readyCheckId = setInterval(async () => {
+	const readyCheckId = setInterval( () => {
 		if (document.readyState === 'complete') {
 			clearInterval(readyCheckId);
-			console.log('mkeys is running...');
-
-			setupContentListener();
-
-			// Short wait before activating the time skip feature
-			await new Promise((r) => setTimeout(r, 2000));
-
-			setupTimeSkip();
+			setInterval(extensionSetup, Config.POLL_MS)
 		}
 	});
 });

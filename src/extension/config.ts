@@ -5,6 +5,7 @@ import { ShortcutKey } from '../types';
 export const DEBUG = process.env.DEBUG == null ? false : true;
 
 export const Config = {
+	POLL_MS: 5000,
 	MAX_SKIP_MINUTES: 30,
 	MIN_SKIP_MINUTES: 1,
 	DEFAULT_SKIP_MINUTES: 1,

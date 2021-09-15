@@ -6,7 +6,7 @@
 	"scripts": {
 		"release": "webpack --mode production --config webpack.config.js",
 		"watch": "DEBUG=1 webpack --mode development -w --config webpack.config.js",
-		"debug": "web-ext run --args=' --lang en' -t chromium --chromium-binary /Applications/Chromium.app/Contents/MacOS/Chromium -s dist/ --reload --start-url 'https://www.youtube.com/watch?v=9jHwwJgSTR4' --chromium-profile ~/Library/Application\\ Support/Chromium/Default",
+		"debug": "web-ext run --args=' --lang en' -t chromium --chromium-binary /Applications/Chromium.app/Contents/MacOS/Chromium -s dist/ --reload --start-url 'https://www.youtube.com/watch?v=9jHwwJgSTR4'",
 		"lint": "eslint . --ext 'ts,tsx,js,jsx'",
 		"analyze": "webpack --progress --profile --json > stats.json && webpack-bundle-analyzer stats.json",
 		"firefox": "rm -rf dist 2> /dev/null ; V2=1 webpack --mode production --config webpack.config.js && web-ext sign -s dist --api-key $(cat ~/Config/secret/mozilla_issuer) --api-secret $(cat ~/Config/secret/mozilla.jwt)"

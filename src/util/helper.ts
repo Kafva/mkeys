@@ -1,6 +1,8 @@
 import { DEBUG, Config } from '../extension/config';
 import { ExtensionResponse, MESSAGE, STORAGE_KEYS } from '../types';
 
+export const debugLog = (...msgs: any[]) : void => { DEBUG && console.log(...msgs); }
+
 export const validateMinutes = (minutes: number): boolean => {
 	return (
 		Config.MIN_SKIP_MINUTES <= minutes && minutes <= Config.MAX_SKIP_MINUTES
@@ -24,7 +26,7 @@ export const chromeMessageErrorOccured = (
 		return true;
 	}
 	else {
-		DEBUG && console.log(`(${completeAction}) response:`, response);
+		debugLog(`(${completeAction}) response:`, response);
 		return false;
 	}
 };
