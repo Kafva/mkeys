@@ -24,9 +24,8 @@ yarn && yarn firefox
 Upon success, the files for the extension will reside under `./dist/`. 
 To install the extension in a Chromium based browser go to 
 `chrome://extensions`, enable _Developer mode_, click _Load unpacked_ and 
-choose the `dist` folder. For Firefox, go to `about:debugging`, 
-*This Firefox* and choose `dist/manifest.json` from the *Load temporary add-on*
-option. 
+choose the `dist` folder. For Firefox, go to `about:debugging` and choose 
+`dist/manifest.json` from the *Load temporary add-on* option. 
 
 ## Development
 
